@@ -87,6 +87,43 @@ function initCues(): void {
   }
 }
 
+/**
+ * Vollbild für die Galerie.
+ *
+ * <dialog> übernimmt Fokusfalle, Esc und Backdrop; hier bleibt nur, das
+ * hochauflösende Bild einzuhaengen. Die große Datei wird erst beim Klick
+ * geladen — nebeneinander reicht die kleine Fassung.
+ */
+function initLightbox(): void {
+  const box = document.querySelector<HTMLDialogElement>('#lightbox');
+  const img = box?.querySelector<HTMLImageElement>('.lightbox__img');
+  const cap = box?.querySelector<HTMLElement>('.lightbox__cap');
+  if (!box || !img || !cap || typeof box.showModal !== 'function') return;
+
+  for (const shot of document.querySelectorAll<HTMLButtonElement>('.shot')) {
+    shot.addEventListener('click', () => {
+      img.src = shot.dataset.full ?? '';
+      img.alt = shot.dataset.alt ?? '';
+      cap.textContent = shot.dataset.caption ?? '';
+      box.showModal();
+    });
+  }
+
+  // Klick auf den Backdrop schließt: das Ereignis trifft dann den Dialog
+  // selbst, nicht das Bild darin.
+  box.addEventListener('click', (event) => {
+    if (event.target === box) box.close();
+  });
+  box.querySelector('[data-close]')?.addEventListener('click', () => box.close());
+
+  // Die große Datei wieder freigeben, sonst hält der Browser bis zu drei
+  // Vollauflösungen im Speicher.
+  box.addEventListener('close', () => {
+    img.removeAttribute('src');
+  });
+}
+
 initReveal();
 initStickyHeader();
 initCues();
+initLightbox();

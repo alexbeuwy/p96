@@ -110,6 +110,46 @@ try {
     check('clip paused on leave', await video.evaluate((v) => v.paused));
     check('clip rewound', (await video.evaluate((v) => v.currentTime)) === 0);
 
+    // --- Galerie und Vollbild ---------------------------------------------
+    check('gallery shows three shots', (await page.locator('.shot').count()) === 3);
+    check(
+      'full-resolution file not fetched before the click',
+      !(await page.evaluate(() =>
+        performance.getEntriesByType('resource').some((r) => r.name.includes('-full.webp')))),
+    );
+
+    const box = page.locator('#lightbox');
+    check('lightbox closed initially', !(await box.evaluate((d) => d.open)));
+
+    await page.locator('.shot').first().click();
+    await page.waitForTimeout(600);
+    check('click opens the lightbox', await box.evaluate((d) => d.open));
+    check(
+      'lightbox shows the full-resolution file',
+      (await box.locator('img').getAttribute('src'))?.endsWith('strasse-full.webp') === true,
+    );
+    check(
+      'full image actually decoded',
+      await box.locator('img').evaluate((i) => i.naturalWidth) === 2400,
+    );
+
+    // Der Schließen-Knopf muss im Viewport liegen — bei negativem Offset
+    // gegen den bereits fixierten Dialog rutscht er darüber hinaus.
+    const close = await box.locator('[data-close]').boundingBox();
+    check(
+      'close button inside the viewport',
+      !!close && close.y >= 0 && close.x >= 0,
+      close ? `oben ${Math.round(close.y)}px` : 'nicht gefunden',
+    );
+
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(400);
+    check('Escape closes the lightbox', !(await box.evaluate((d) => d.open)));
+    check(
+      'source released on close',
+      !(await box.locator('img').evaluate((i) => i.hasAttribute('src'))),
+    );
+
     check('no console or network errors', errors.length === 0, errors.join(' | '));
     await context.close();
   }

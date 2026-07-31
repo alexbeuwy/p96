@@ -469,7 +469,54 @@
           <li data-reveal><svg aria-hidden="true"><use href="#ic-waste" /></svg>Müllraum im Gebäude, Pelletlieferfläche an der Andienung</li>
         </ul>
       </section>
+
+      <section class="gallery">
+        <div class="gallery__head">
+          <p class="kicker" data-reveal>Alle Ansichten</p>
+          <h2 class="scene__title" data-reveal>Die drei Renderings<br /><em>in voller Auflösung</em></h2>
+        </div>
+        <div class="gallery__row">
+          <button class="shot" type="button" data-reveal
+                  data-full="%VITE_MEDIA_BASE%/strasse-full.webp"
+                  data-alt="Straßenansicht Am Schloßberg bei Tag: Natursteinsockel, Putzbau mit vertikaler Holzlamellenschicht, Tiefgaragenzufahrt und die Baumreihe entlang des Gebäudes."
+                  data-caption="01 Am Schloßberg — 2400 × 1792">
+            <img class="shot__img" src="%VITE_MEDIA_BASE%/strasse.webp" width="1664" height="1244"
+                 loading="lazy" decoding="async" alt="Straßenansicht Am Schloßberg bei Tag: Natursteinsockel, Putzbau mit vertikaler Holzlamellenschicht, Tiefgaragenzufahrt und die Baumreihe entlang des Gebäudes." />
+            <span class="shot__label"><span class="shot__no">01</span>Am Schloßberg</span>
+          </button>
+          <button class="shot" type="button" data-reveal
+                  data-full="%VITE_MEDIA_BASE%/eingang-full.webp"
+                  data-alt="Eingang des Ärztehauses bei Dämmerung: vertikale Holzlamellen, rundes Fenster, verglaster Windfang und beleuchtete Praxisgeschosse."
+                  data-caption="02 Eingang — 1664 × 1244">
+            <img class="shot__img" src="%VITE_MEDIA_BASE%/eingang.webp" width="1664" height="1244"
+                 loading="lazy" decoding="async" alt="Eingang des Ärztehauses bei Dämmerung: vertikale Holzlamellen, rundes Fenster, verglaster Windfang und beleuchtete Praxisgeschosse." />
+            <span class="shot__label"><span class="shot__no">02</span>Eingang</span>
+          </button>
+          <button class="shot" type="button" data-reveal
+                  data-full="%VITE_MEDIA_BASE%/vorplatz-full.webp"
+                  data-alt="Vorplatz bei Sonnenuntergang: Rundbank um den Bestandsbaum, überdachte Fahrradstellplätze, Blühflächen und Photovoltaik auf dem Dach."
+                  data-caption="03 Vorplatz — 1664 × 1244">
+            <img class="shot__img" src="%VITE_MEDIA_BASE%/vorplatz.webp" width="1664" height="1244"
+                 loading="lazy" decoding="async" alt="Vorplatz bei Sonnenuntergang: Rundbank um den Bestandsbaum, überdachte Fahrradstellplätze, Blühflächen und Photovoltaik auf dem Dach." />
+            <span class="shot__label"><span class="shot__no">03</span>Vorplatz</span>
+          </button>
+        </div>
+        <p class="gallery__hint" data-reveal>Anklicken für Vollbild</p>
+      </section>
     </main>
+
+    <!--
+      <dialog> statt eigener Overlay-Logik: Fokusfalle, Esc zum Schließen und
+      der Backdrop kommen vom Browser, nicht aus 80 Zeilen JavaScript.
+    -->
+    <dialog class="lightbox" id="lightbox" aria-label="Rendering in voller Auflösung">
+      <button class="lightbox__close" type="button" data-close aria-label="Schließen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+             stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+      </button>
+      <img class="lightbox__img" alt="" />
+      <p class="lightbox__cap"></p>
+    </dialog>
 
     <footer class="foot">
       <p class="foot__note">
