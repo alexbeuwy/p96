@@ -50,10 +50,12 @@ Zielgröße pro Clip: unter 4 MB. Geladen wird ohnehin erst beim ersten Hover
 ## Hochladen
 
 ```bash
-cp ../../.env.example ../../.env.local   # Storage-Key eintragen
+cp .env.example .env.local   # Storage-Key eintragen (Repo-Wurzel)
 npm run media:push
 ```
 
-Landet unter `https://storage.bunnycdn.com/beuwy/p96/`, ausgeliefert über die
-Pull Zone aus `.env.production`. Wurde eine Datei ersetzt, die schon live war:
-Pull-Zone-Cache im Bunny-Dashboard purgen.
+Landet unter `https://storage.bunnycdn.com/beuwy/p96/`. Damit die Seite auch
+von dort liest, im Vercel-Dashboard `VITE_MEDIA_BASE` auf die Pull-Zone-URL
+setzen — siehe `.env.production`. Wurde eine Datei ersetzt, die schon live war:
+Pull-Zone-Cache im Bunny-Dashboard purgen, sonst läuft der alte Clip bis zum
+Ablauf der TTL weiter.

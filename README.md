@@ -54,22 +54,47 @@ denselben Wert haben.
 ## Medien
 
 Die aktuellen Dateien in `public/media/` sind Platzhalter, damit die Seite
-sofort läuft. Zum Austauschen siehe `public/media/README.md` — dort stehen die
+sofort läuft. Zum Austauschen siehe `docs/medien.md` — dort stehen die
 Dateinamen, die ffmpeg-Kommandos und die eine Regel, auf die es ankommt: **das
 Standbild muss der erste Frame des Clips sein.**
 
-## Hosting über Bunny
+## Deploy über Vercel
 
-Lokal kommen die Medien aus `public/media/` (`.env`), im Produktionsbuild aus
-der Pull Zone (`.env.production`). Nur die Basis-URL unterscheidet sich, das
-Markup ist identisch.
+Vercel erkennt Vite von selbst — Build `npm run build`, Output `dist`, sonst
+nichts einzustellen. Es sind **keine** Environment Variables nötig, damit der
+erste Deploy funktioniert: der Storage-Key wird nur lokal vom Upload-Skript
+gebraucht, nie beim Build.
+
+Jeder Push auf den Production Branch baut neu; danach reicht ein Refresh im
+Browser. Pushes auf andere Branches erzeugen Preview-Deploys unter eigener
+URL — praktisch zum Gegenlesen, aber die Produktions-URL ändert sich dadurch
+nicht.
+
+## Medien-Auslieferung
+
+Standardmäßig kommen die Medien aus dem Build selbst (`public/media/` →
+`dist/media/`), lokal wie in Produktion. Das funktioniert sofort und ohne
+Bunny.
+
+Sobald die echten Clips auf Bunny liegen, wird im Vercel-Dashboard unter
+Settings → Environment Variables gesetzt:
+
+```
+VITE_MEDIA_BASE = https://<pull-zone>.b-cdn.net/p96     (Scope: Production)
+```
+
+Das überschreibt `.env.production` beim Build. Umschalten und Zurückschalten
+kostet damit keinen Commit, und ein Rollback bei klemmender Pull Zone ist ein
+Klick.
 
 ```bash
 cp .env.example .env.local     # Storage-Key eintragen
 npm run media:push             # public/media/ → storage.bunnycdn.com/beuwy/p96/
 ```
 
-Vor dem ersten Deploy in `.env.production` die Pull-Zone-Domain eintragen.
+Standbilder (~25 kB) dürfen im Repo bleiben. Die echten Clips (~4 MB pro
+Stück) gehören auf Bunny: Git ist kein Videohosting, und Vercel rechnet
+ausgehenden Traffic mit ab.
 
 > **Zum Schlüssel:** Der Storage-Key ist das Passwort für die gesamte Zone —
 > damit kann man alles lesen, überschreiben und löschen. Er gehört in
