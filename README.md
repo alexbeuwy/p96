@@ -1,13 +1,13 @@
-# Freianlagen Am Schlossberg 2, Weinheim — Konzeptstudie
+# Erweiterung der Hector-Stiftung — Am Schlossberg 2, Weinheim
 
-Einseitige Präsentationsseite zur Freianlagen-Konzeptstudie (Plan K01,
-KEPOS Gartenarchitektur, Bauherrschaft Hector Geschäftsführungs GmbH). Drei
+Einseitige Präsentationsseite zur Erweiterung und Fassadenneugestaltung
+(planwerkstatt 96, Bauherrschaft Hector Geschäftsführungs GmbH). Drei
 Darstellungen, die beim Überfahren in eine Videoschleife übergehen und beim
 Verlassen wieder zum Standbild werden.
 
-Inhaltlich ist die Studie ausdrücklich eine **Ideensammlung und kein
-Vorentwurf** — dieser Hinweis steht auf dem Plan und deshalb auch auf der
-Seite. Wer Texte ändert, sollte ihn stehen lassen.
+Zwei Vorbehalte stehen auf der Seite und sollten dort bleiben: der Planstand
+vom 01.07.2026 ist ein **Vorabzug**, und die Freianlagen sind eine
+**Ideensammlung und kein Vorentwurf**. Beides steht so auf den Plänen.
 
 > **Vertraulichkeit:** Ein Vercel-Deployment ist standardmäßig öffentlich
 > erreichbar. Solange die Studie nicht freigegeben ist, gehört auf das Projekt
@@ -66,9 +66,13 @@ denselben Wert haben.
 ## Medien
 
 Die aktuellen Dateien in `public/media/` sind Platzhalter, damit die Seite
-sofort läuft. Zum Austauschen siehe `docs/medien.md` — dort stehen die
-Dateinamen, die ffmpeg-Kommandos und die eine Regel, auf die es ankommt: **das
-Standbild muss der erste Frame des Clips sein.**
+sofort läuft. **`docs/medien.md` vor dem Generieren der KI-Clips lesen** —
+dort stehen Dateinamen, Prompt-Bausteine, die getesteten ffmpeg-Kommandos und
+die zwei Regeln, an denen der Effekt hängt: Frame 0 des Clips muss exakt das
+Standbild sein, und der Clip muss nahtlos schleifen.
+
+Das Seitenverhältnis steht an einer Stelle: `--shot-aspect` in
+`src/styles.css` (derzeit 16:9). Standbild und Clip müssen es teilen.
 
 ## Deploy über Vercel
 

@@ -87,7 +87,7 @@ try {
     check('hover starts the clip', (await shot.getAttribute('data-clip')) === 'playing');
     check(
       'source attached lazily',
-      (await video.evaluate((v) => v.currentSrc)).endsWith('01-zufahrt.webm'),
+      (await video.evaluate((v) => v.currentSrc)).endsWith('01-strasse.webm'),
     );
     check('clip is muted and looping', await video.evaluate((v) => v.muted && v.loop));
 

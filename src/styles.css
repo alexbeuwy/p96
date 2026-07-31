@@ -175,7 +175,10 @@ a {
 .shot__frame {
   position: relative;
   margin: 0;
-  aspect-ratio: 16 / 10;
+  /* Ein Ort für das Seitenverhältnis. Standbild UND Clip müssen es teilen —
+     weicht der Clip ab, springt das Bild in dem Moment, in dem übergeblendet
+     wird, und genau das soll der Effekt ja verbergen. */
+  aspect-ratio: var(--shot-aspect, 16 / 9);
   overflow: hidden;
   background: #e8e4dc;
   /* A hairline instead of a shadow: renderings should sit on the paper, not
