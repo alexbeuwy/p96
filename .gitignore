@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.DS_Store
+*.local
+.vite/
+
+# Source video masters — commit only the web-encoded files in public/media/
+*.mov
+*.prores.mp4

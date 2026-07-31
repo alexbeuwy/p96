@@ -1,0 +1,23 @@
+{
+  "name": "p96",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Landing page pitching a residential project — three renderings that come alive on hover.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "media:push": "node scripts/upload-media.mjs",
+    "test": "node tests/hover.spec.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.11"
+  },
+  "dependencies": {
+    "@fontsource/instrument-serif": "^5.3.0",
+    "@fontsource/inter": "^5.3.0"
+  }
+}

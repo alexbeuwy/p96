@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#f5f3ef" />
+    <title>Projekt P96 — Wohnbebauung am Hang</title>
+    <meta
+      name="description"
+      content="Drei Renderings, die sich beim Überfahren in Bewegung auflösen. Studie für eine Wohnbebauung am Hang."
+    />
+
+    <!--
+      Schriften werden selbst gehostet (@fontsource, siehe src/main.ts) — kein
+      Request an fonts.gstatic.com. Das ist hier keine Optimierung, sondern
+      Pflicht: die Einbindung von Google Fonts überträgt die IP des Besuchers
+      in die USA und ist damit nach LG München I, 3 O 17493/20 ohne Einwilligung
+      ein DSGVO-Verstoß. Nebeneffekt: die Seite rendert auch dann korrekt, wenn
+      das WLAN im Besprechungsraum nicht mitspielt.
+    -->
+  </head>
+
+  <body>
+    <header class="masthead">
+      <span class="masthead__mark">P96</span>
+      <span class="masthead__meta">Studie · 2026</span>
+    </header>
+
+    <main>
+      <section class="lede">
+        <h1 class="lede__title">
+          Wohnbebauung<br />
+          <em>am Hang</em>
+        </h1>
+        <p class="lede__text">
+          Vierundzwanzig Einheiten, gestaffelt entlang der bestehenden Geländekante.
+          Jede Wohnung erhält Morgenlicht und einen Ausblick, den das Grundstück
+          bereits besitzt — die Bebauung erfindet ihn nicht, sie rahmt ihn.
+        </p>
+        <p class="lede__hint" data-hint>Renderings überfahren für Bewegung</p>
+      </section>
+
+      <!--
+        Ein Block pro Rendering. Zum Austauschen genügt es, die drei Dateinamen
+        in public/media/ zu ersetzen — siehe public/media/README.md.
+      -->
+      <section class="work">
+        <article class="shot" data-clip="idle">
+          <figure class="shot__frame">
+            <img
+              class="shot__still"
+              src="%VITE_MEDIA_BASE%/01-ankunft.jpg"
+              width="1600"
+              height="1000"
+              alt="Blick von der Zufahrt auf die gestaffelten Baukörper im Nachmittagslicht."
+              fetchpriority="high"
+            />
+            <video class="shot__clip" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1">
+              <source data-src="%VITE_MEDIA_BASE%/01-ankunft.webm" type="video/webm" />
+              <source data-src="%VITE_MEDIA_BASE%/01-ankunft.mp4" type="video/mp4" />
+            </video>
+          </figure>
+          <figcaption class="shot__meta">
+            <span class="shot__index">01</span>
+            <h2 class="shot__title">Ankunft</h2>
+            <p class="shot__note">
+              Die Zufahrt läuft quer zum Hang, damit die Staffelung schon beim
+              Ankommen lesbar wird.
+            </p>
+          </figcaption>
+        </article>
+
+        <article class="shot shot--offset" data-clip="idle">
+          <figure class="shot__frame">
+            <img
+              class="shot__still"
+              src="%VITE_MEDIA_BASE%/02-hof.jpg"
+              width="1600"
+              height="1000"
+              alt="Der gemeinschaftliche Hof zwischen den beiden mittleren Baukörpern."
+              loading="lazy"
+            />
+            <video class="shot__clip" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1">
+              <source data-src="%VITE_MEDIA_BASE%/02-hof.webm" type="video/webm" />
+              <source data-src="%VITE_MEDIA_BASE%/02-hof.mp4" type="video/mp4" />
+            </video>
+          </figure>
+          <figcaption class="shot__meta">
+            <span class="shot__index">02</span>
+            <h2 class="shot__title">Hof</h2>
+            <p class="shot__note">
+              Kein Abstandsgrün, sondern ein nutzbarer Zwischenraum — Zugang,
+              Spiel und Aufenthalt teilen sich eine Fläche.
+            </p>
+          </figcaption>
+        </article>
+
+        <article class="shot" data-clip="idle">
+          <figure class="shot__frame">
+            <img
+              class="shot__still"
+              src="%VITE_MEDIA_BASE%/03-schwelle.jpg"
+              width="1600"
+              height="1000"
+              alt="Innenraum mit Blick über die Loggia ins Tal."
+              loading="lazy"
+            />
+            <video class="shot__clip" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1">
+              <source data-src="%VITE_MEDIA_BASE%/03-schwelle.webm" type="video/webm" />
+              <source data-src="%VITE_MEDIA_BASE%/03-schwelle.mp4" type="video/mp4" />
+            </video>
+          </figure>
+          <figcaption class="shot__meta">
+            <span class="shot__index">03</span>
+            <h2 class="shot__title">Schwelle</h2>
+            <p class="shot__note">
+              Die Loggia ist tief genug, um im Sommer zu verschatten, und offen
+              genug, um im Winter nicht zu verdunkeln.
+            </p>
+          </figcaption>
+        </article>
+      </section>
+
+      <section class="close">
+        <dl class="facts">
+          <div class="facts__row"><dt>Einheiten</dt><dd>24</dd></div>
+          <div class="facts__row"><dt>BGF</dt><dd>3.180 m²</dd></div>
+          <div class="facts__row"><dt>Grundstück</dt><dd>6.400 m²</dd></div>
+          <div class="facts__row"><dt>Status</dt><dd>Vorentwurf</dd></div>
+        </dl>
+        <p class="close__cta">
+          Vollständige Mappe und Massenmodell auf Anfrage —
+          <a href="mailto:alex@beuwy.com">alex@beuwy.com</a>
+        </p>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
