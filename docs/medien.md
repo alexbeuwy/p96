@@ -5,9 +5,9 @@ wer die gleichen Namen benutzt, muss kein HTML anfassen.
 
 | Slot | Still (Poster) | Clip |
 | --- | --- | --- |
-| 01 Ankunft | `01-ankunft.jpg` | `01-ankunft.webm` + `01-ankunft.mp4` |
-| 02 Hof | `02-hof.jpg` | `02-hof.webm` + `02-hof.mp4` |
-| 03 Schwelle | `03-schwelle.jpg` | `03-schwelle.webm` + `03-schwelle.mp4` |
+| 01 Zufahrt | `01-zufahrt.jpg` | `01-zufahrt.webm` + `01-zufahrt.mp4` |
+| 02 Multicodierte Fläche | `02-multicodierung.jpg` | `02-multicodierung.webm` + `02-multicodierung.mp4` |
+| 03 Baumscheiben | `03-baumscheiben.jpg` | `03-baumscheiben.webm` + `03-baumscheiben.mp4` |
 
 Die `.jpg` hier sind Platzhalter, damit die Seite ohne echte Renderings läuft.
 Einfach überschreiben. Fehlt ein Clip, bleibt die Kachel beim Still stehen —
@@ -28,16 +28,16 @@ aufhört**. Also: das Still ist Frame 0 des Clips, nicht ein separater Render.
 
 ```bash
 # Still = erster Frame des Clips
-ffmpeg -i master.mov -vframes 1 -q:v 2 01-ankunft.jpg
+ffmpeg -i master.mov -vframes 1 -q:v 2 01-zufahrt.jpg
 
 # MP4 (H.264) — die Universalfassung
 ffmpeg -i master.mov -an -vf "scale=1600:-2" \
   -c:v libx264 -profile:v high -crf 23 -preset slow \
-  -movflags +faststart 01-ankunft.mp4
+  -movflags +faststart 01-zufahrt.mp4
 
 # WebM (VP9) — deutlich kleiner, wird von Chrome/Firefox bevorzugt
 ffmpeg -i master.mov -an -vf "scale=1600:-2" \
-  -c:v libvpx-vp9 -crf 33 -b:v 0 -row-mt 1 01-ankunft.webm
+  -c:v libvpx-vp9 -crf 33 -b:v 0 -row-mt 1 01-zufahrt.webm
 ```
 
 `-movflags +faststart` schiebt den Index an den Dateianfang — ohne das lädt

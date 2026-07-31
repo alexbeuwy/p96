@@ -1,7 +1,19 @@
-# P96 — Wohnbebauung am Hang
+# Freianlagen Am Schlossberg 2, Weinheim — Konzeptstudie
 
-Einseitige Pitch-Seite. Drei Renderings, die beim Überfahren in eine
-Videoschleife übergehen und beim Verlassen wieder zum Standbild werden.
+Einseitige Präsentationsseite zur Freianlagen-Konzeptstudie (Plan K01,
+KEPOS Gartenarchitektur, Bauherrschaft Hector Geschäftsführungs GmbH). Drei
+Darstellungen, die beim Überfahren in eine Videoschleife übergehen und beim
+Verlassen wieder zum Standbild werden.
+
+Inhaltlich ist die Studie ausdrücklich eine **Ideensammlung und kein
+Vorentwurf** — dieser Hinweis steht auf dem Plan und deshalb auch auf der
+Seite. Wer Texte ändert, sollte ihn stehen lassen.
+
+> **Vertraulichkeit:** Ein Vercel-Deployment ist standardmäßig öffentlich
+> erreichbar. Solange die Studie nicht freigegeben ist, gehört auf das Projekt
+> ein Passwortschutz (Vercel → Settings → Deployment Protection). Die Seite
+> setzt bereits `noindex`, das hält aber nur Suchmaschinen fern, keine
+> Besucher mit der URL.
 
 ```bash
 npm install

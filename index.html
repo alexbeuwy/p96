@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="theme-color" content="#f5f3ef" />
-    <title>Projekt P96 — Wohnbebauung am Hang</title>
+    <title>Freianlagen Am Schlossberg 2, Weinheim — Konzeptstudie</title>
     <meta
       name="description"
-      content="Drei Renderings, die sich beim Überfahren in Bewegung auflösen. Studie für eine Wohnbebauung am Hang."
+      content="Konzeptstudie Freianlagen Am Schlossberg 2, Weinheim. Multicodierung befestigter Flächen, Schwammstadtprinzip, Aufwertung der Freiräume."
     />
+    <!-- Interne Studie: nicht für Suchmaschinen. -->
+    <meta name="robots" content="noindex, nofollow" />
 
     <!--
       Schriften werden selbst gehostet (@fontsource, siehe src/main.ts) — kein
@@ -23,50 +25,53 @@
 
   <body>
     <header class="masthead">
-      <span class="masthead__mark">P96</span>
-      <span class="masthead__meta">Studie · 2026</span>
+      <span class="masthead__mark">Am Schlossberg 2</span>
+      <span class="masthead__meta">Konzeptstudie · K01</span>
     </header>
 
     <main>
       <section class="lede">
         <h1 class="lede__title">
-          Wohnbebauung<br />
-          <em>am Hang</em>
+          Freianlagen<br />
+          <em>am Schlossberg</em>
         </h1>
         <p class="lede__text">
-          Vierundzwanzig Einheiten, gestaffelt entlang der bestehenden Geländekante.
-          Jede Wohnung erhält Morgenlicht und einen Ausblick, den das Grundstück
-          bereits besitzt — die Bebauung erfindet ihn nicht, sie rahmt ihn.
+          Die befestigten Flächen am Schlossberg leisten heute je eine Aufgabe.
+          Die Studie fragt, was sie leisten könnten, wenn sie mehrere zugleich
+          übernehmen: Parken, Aufenthalt und Raum für Feste auf derselben
+          Fläche, Entwässerung nach dem Schwammstadtprinzip statt in den Kanal,
+          und ein Zufahrtsbereich, den man wiedererkennt.
         </p>
-        <p class="lede__hint" data-hint>Renderings überfahren für Bewegung</p>
+        <p class="lede__hint" data-hint>Darstellungen überfahren für Bewegung</p>
       </section>
 
       <!--
-        Ein Block pro Rendering. Zum Austauschen genügt es, die drei Dateinamen
-        in public/media/ zu ersetzen — siehe docs/medien.md.
+        Ein Block pro Darstellung. Zum Austauschen genügt es, die drei
+        Dateinamen in public/media/ zu ersetzen — siehe docs/medien.md.
       -->
       <section class="work">
         <article class="shot" data-clip="idle">
           <figure class="shot__frame">
             <img
               class="shot__still"
-              src="%VITE_MEDIA_BASE%/01-ankunft.jpg"
+              src="%VITE_MEDIA_BASE%/01-zufahrt.jpg"
               width="1600"
               height="1000"
-              alt="Blick von der Zufahrt auf die gestaffelten Baukörper im Nachmittagslicht."
+              alt="Zufahrtsbereich mit trockenheitsverträglichen Staudenmischungen entlang der Belagsfläche."
               fetchpriority="high"
             />
             <video class="shot__clip" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1">
-              <source data-src="%VITE_MEDIA_BASE%/01-ankunft.webm" type="video/webm" />
-              <source data-src="%VITE_MEDIA_BASE%/01-ankunft.mp4" type="video/mp4" />
+              <source data-src="%VITE_MEDIA_BASE%/01-zufahrt.webm" type="video/webm" />
+              <source data-src="%VITE_MEDIA_BASE%/01-zufahrt.mp4" type="video/mp4" />
             </video>
           </figure>
           <figcaption class="shot__meta">
             <span class="shot__index">01</span>
-            <h2 class="shot__title">Ankunft</h2>
+            <h2 class="shot__title">Zufahrt</h2>
             <p class="shot__note">
-              Die Zufahrt läuft quer zum Hang, damit die Staffelung schon beim
-              Ankommen lesbar wird.
+              Trockenheitsverträgliche Staudenmischungen fördern die
+              Biodiversität und geben dem Gelände einen
+              Wiedererkennungswert.
             </p>
           </figcaption>
         </article>
@@ -75,23 +80,25 @@
           <figure class="shot__frame">
             <img
               class="shot__still"
-              src="%VITE_MEDIA_BASE%/02-hof.jpg"
+              src="%VITE_MEDIA_BASE%/02-multicodierung.jpg"
               width="1600"
               height="1000"
-              alt="Der gemeinschaftliche Hof zwischen den beiden mittleren Baukörpern."
+              alt="Versickerungsfähige Stellplatzfläche mit erhöhten Pflanzinseln, die als Sitzgelegenheit dienen."
               loading="lazy"
             />
             <video class="shot__clip" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1">
-              <source data-src="%VITE_MEDIA_BASE%/02-hof.webm" type="video/webm" />
-              <source data-src="%VITE_MEDIA_BASE%/02-hof.mp4" type="video/mp4" />
+              <source data-src="%VITE_MEDIA_BASE%/02-multicodierung.webm" type="video/webm" />
+              <source data-src="%VITE_MEDIA_BASE%/02-multicodierung.mp4" type="video/mp4" />
             </video>
           </figure>
           <figcaption class="shot__meta">
             <span class="shot__index">02</span>
-            <h2 class="shot__title">Hof</h2>
+            <h2 class="shot__title">Multicodierte Fläche</h2>
             <p class="shot__note">
-              Kein Abstandsgrün, sondern ein nutzbarer Zwischenraum — Zugang,
-              Spiel und Aufenthalt teilen sich eine Fläche.
+              Stellplätze, Aufenthalt und Raum für Feste und
+              Firmenveranstaltungen auf derselben Fläche. Erhöhte Pflanzinseln
+              dienen zugleich als Sitzgelegenheit, die Beläge sind
+              versickerungsfähig.
             </p>
           </figcaption>
         </article>
@@ -100,38 +107,64 @@
           <figure class="shot__frame">
             <img
               class="shot__still"
-              src="%VITE_MEDIA_BASE%/03-schwelle.jpg"
+              src="%VITE_MEDIA_BASE%/03-baumscheiben.jpg"
               width="1600"
               height="1000"
-              alt="Innenraum mit Blick über die Loggia ins Tal."
+              alt="Vergrößerte, mit Stauden bepflanzte Baumscheiben der erhaltenswerten Bestandsbäume."
               loading="lazy"
             />
             <video class="shot__clip" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1">
-              <source data-src="%VITE_MEDIA_BASE%/03-schwelle.webm" type="video/webm" />
-              <source data-src="%VITE_MEDIA_BASE%/03-schwelle.mp4" type="video/mp4" />
+              <source data-src="%VITE_MEDIA_BASE%/03-baumscheiben.webm" type="video/webm" />
+              <source data-src="%VITE_MEDIA_BASE%/03-baumscheiben.mp4" type="video/mp4" />
             </video>
           </figure>
           <figcaption class="shot__meta">
             <span class="shot__index">03</span>
-            <h2 class="shot__title">Schwelle</h2>
+            <h2 class="shot__title">Baumscheiben</h2>
             <p class="shot__note">
-              Die Loggia ist tief genug, um im Sommer zu verschatten, und offen
-              genug, um im Winter nicht zu verdunkeln.
+              Vergrößerte, mit Stauden bepflanzte Baumscheiben verbessern die
+              Vitalität der erhaltenswerten Bestandsbäume und zugleich die
+              Entwässerungssituation.
             </p>
           </figcaption>
         </article>
       </section>
 
       <section class="close">
+        <h2 class="close__heading">Zielvorstellungen</h2>
+        <ul class="aims">
+          <li>Multicodierung befestigter Flächen und Schaffung neuer Parkplätze</li>
+          <li>Aufwertung der Freiräume</li>
+          <li>Wiedererkennungswert des Schlossberggeländes</li>
+          <li>Anwendung des Schwammstadtprinzips</li>
+        </ul>
+
+        <h2 class="close__heading">Weitere Maßnahmen</h2>
+        <ul class="aims aims--split">
+          <li>Seniorengerechte Gestaltung inkl. Bänken, Behindertenparkplatz und Ladesäule</li>
+          <li>Überdachte Fahrradparkplätze mit Dachbegrünung</li>
+          <li>Klimaangepasste Baumarten, Pflanzraum schaffen</li>
+          <li>Temporäre Ausweichparkplätze, versickerungsfähig, zugleich Stellfläche für Müllcontainer</li>
+          <li>Bestandspflaster gemäß RStO nach BK 1, Pflasterstärke mind. 10–12 cm</li>
+          <li>Feuerwehraufstell-, Pelletliefer- und Andienungsfläche neu pflastern</li>
+          <li>Bestandsbaum und Grünfläche erhalten</li>
+        </ul>
+
         <dl class="facts">
-          <div class="facts__row"><dt>Einheiten</dt><dd>24</dd></div>
-          <div class="facts__row"><dt>BGF</dt><dd>3.180 m²</dd></div>
-          <div class="facts__row"><dt>Grundstück</dt><dd>6.400 m²</dd></div>
-          <div class="facts__row"><dt>Status</dt><dd>Vorentwurf</dd></div>
+          <div class="facts__row"><dt>Ort</dt><dd>Weinheim</dd></div>
+          <div class="facts__row"><dt>Plan</dt><dd>K01</dd></div>
+          <div class="facts__row"><dt>Maßstab</dt><dd>1:100</dd></div>
+          <div class="facts__row"><dt>Format</dt><dd>DIN A1</dd></div>
         </dl>
-        <p class="close__cta">
-          Vollständige Mappe und Massenmodell auf Anfrage —
-          <a href="mailto:alex@beuwy.com">alex@beuwy.com</a>
+
+        <p class="close__note">
+          <strong>Ideensammlung und kein Vorentwurf.</strong> Die dargestellten
+          Maßnahmen sind nicht abgestimmt und nicht genehmigungsrelevant.
+        </p>
+
+        <p class="close__credit">
+          Freianlagenplanung KEPOS Gartenarchitektur, Dipl.-Ing. Carola Dittrich,
+          Weinheim · Bauherrschaft Hector Geschäftsführungs GmbH
         </p>
       </section>
     </main>
