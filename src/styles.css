@@ -6,20 +6,24 @@
   --paper: #f5f3ef;
   --ink: #16181c;
   --ink-soft: #6e6a63;
-  --hairline: #ddd8cf;
 
-  --measure: 62ch;
-  --gutter: clamp(1.25rem, 5vw, 5rem);
+  --gutter: clamp(1.25rem, 5vw, 4rem);
 
-  /* Motion. --clip-fade must match FADE_MS in hover-video.ts. */
+  /* Seitenverhältnis der Ansicht — Standbild und Clip teilen es sich.
+     1664 x 1244 ist das Format, in dem der Clip vorliegt. */
+  --shot-aspect: 1664 / 1244;
+
+  /* Platzbedarf alles ausser der Ansicht. Empirisch gemessen, siehe .view. */
+  --chrome: 23rem;
+
+  /* --clip-fade muss FADE_MS in hover-video.ts entsprechen. */
   --clip-fade: 420ms;
-  --swift: 180ms;
   --settle: 620ms;
   --ease: cubic-bezier(0.2, 0, 0, 1);
 }
 
 /* ---------------------------------------------------------------------------
-   Base
+   Basis
    --------------------------------------------------------------------------- */
 
 *,
@@ -34,162 +38,88 @@ html {
 
 body {
   margin: 0;
+  min-height: 100svh;
+  display: grid;
+  /* Kopf oben, Fuß unten, die Ansicht bekommt den Rest — auf hohen Displays
+     steht sie dadurch mittig statt oben zu kleben. */
+  grid-template-rows: auto 1fr auto;
+  /* Bewusst feste Abstände statt vh: der Platz, den Kopf, Bildunterschrift und
+     Fuß brauchen, geht unten als --chrome in die Höhenbegrenzung der Ansicht
+     ein. Mit vh-Abständen wüchse dieser Bedarf mit der Fensterhöhe mit, und
+     die Rechnung ginge auf keinem Display auf. */
+  gap: 2.5rem;
+  padding: 1.5rem var(--gutter) 1.75rem;
+
   background: var(--paper);
   color: var(--ink);
   font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  font-size: clamp(0.975rem, 0.9rem + 0.3vw, 1.075rem);
+  font-size: clamp(0.9rem, 0.85rem + 0.2vw, 1rem);
   line-height: 1.6;
-  /* Renderings carry the page; keep the type from looking chalky over warm paper. */
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 img,
-video {
+video,
+svg {
   display: block;
   max-width: 100%;
 }
 
-a {
-  color: inherit;
-  text-underline-offset: 0.22em;
-  text-decoration-thickness: from-font;
-}
-
 /* ---------------------------------------------------------------------------
-   Masthead
+   Kopf
    --------------------------------------------------------------------------- */
 
-.masthead {
+.top {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  padding: clamp(1.25rem, 3vw, 2rem) var(--gutter);
-  font-size: 0.8125rem;
+  gap: 1.5rem;
+}
+
+.logo {
+  /* Die Wortmarke ist 6,9:1 — über die Breite steuern, nicht über die Höhe. */
+  width: clamp(9rem, 18vw, 13rem);
+  height: auto;
+  color: var(--ink);
+}
+
+.top__meta {
+  font-size: 0.75rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-}
-
-.masthead__mark {
-  font-weight: 500;
-}
-
-.masthead__meta {
   color: var(--ink-soft);
+  white-space: nowrap;
 }
 
 /* ---------------------------------------------------------------------------
-   Lede
+   Ansicht
    --------------------------------------------------------------------------- */
 
-.lede {
-  padding: clamp(3.5rem, 12vh, 9rem) var(--gutter) clamp(3rem, 9vh, 6rem);
-  max-width: 78rem;
-  margin-inline: auto;
-}
-
-.lede__title {
-  font-family: 'Instrument Serif', ui-serif, Georgia, serif;
-  font-weight: 400;
-  /* Display sizes need their own leading; 1.6 from body would sprawl. */
-  font-size: clamp(2.75rem, 9vw, 7.5rem);
-  line-height: 0.98;
-  letter-spacing: -0.02em;
-  margin: 0 0 clamp(1.75rem, 4vw, 3rem);
-}
-
-.lede__title em {
-  font-style: italic;
-  color: var(--ink-soft);
-}
-
-.lede__text {
-  max-width: var(--measure);
-  margin: 0;
-  color: var(--ink-soft);
-}
-
-.lede__hint {
-  margin: clamp(2rem, 5vw, 3.25rem) 0 0;
-  font-size: 0.75rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  transition: opacity var(--settle) var(--ease);
-}
-
-/* Once someone has hovered a rendering, the instruction has done its job. */
-.lede__hint[data-spent] {
-  opacity: 0;
-}
-
-/* Touch devices scroll clips into view instead of hovering. */
-@media (hover: none), (pointer: coarse) {
-  .lede__hint {
-    display: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .lede__hint {
-    display: none;
-  }
-}
-
-/* ---------------------------------------------------------------------------
-   Renderings
-   --------------------------------------------------------------------------- */
-
-.work {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(4.5rem, 14vh, 11rem);
-  padding: 0 var(--gutter);
-  max-width: 78rem;
-  margin-inline: auto;
-}
-
-.shot {
+main {
   display: grid;
-  gap: clamp(1.25rem, 3vw, 2.25rem);
+  align-content: center;
+  justify-items: center;
+  gap: 1.25rem;
 }
 
-/* Wide viewports get an editorial offset so the three shots don't read as a
-   uniform stack; the caption column sits beside the frame. */
-@media (min-width: 60rem) {
-  .shot {
-    grid-template-columns: minmax(0, 1fr) 15rem;
-    align-items: end;
-    gap: clamp(2rem, 4vw, 3.5rem);
-  }
-
-  .shot--offset {
-    grid-template-columns: 15rem minmax(0, 1fr);
-  }
-
-  .shot--offset .shot__frame {
-    order: 2;
-  }
-}
-
-.shot__frame {
+.view {
   position: relative;
   margin: 0;
-  /* Ein Ort für das Seitenverhältnis. Standbild UND Clip müssen es teilen —
-     weicht der Clip ab, springt das Bild in dem Moment, in dem übergeblendet
-     wird, und genau das soll der Effekt ja verbergen. */
-  aspect-ratio: var(--shot-aspect, 16 / 9);
+  width: 100%;
+  /* Nie höher als der freie Platz, sonst schiebt die Ansicht den Fuß aus dem
+     Bild — und ausgerechnet der Vorbehalt der Planer würde ungesehen
+     weggescrollt. --chrome ist der gemessene Platzbedarf von Kopf, Hinweis,
+     Bildunterschrift, Fuß und allen Abständen. */
+  max-width: min(100%, calc((100svh - var(--chrome)) * 1664 / 1244));
+  aspect-ratio: var(--shot-aspect);
   overflow: hidden;
   background: #e8e4dc;
-  /* A hairline instead of a shadow: renderings should sit on the paper, not
-     float above it. */
-  outline: 1px solid var(--hairline);
-  outline-offset: -1px;
   transition: transform var(--settle) var(--ease);
 }
 
-.shot__still,
-.shot__clip {
+.view__still,
+.view__clip {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -197,157 +127,86 @@ a {
   object-fit: cover;
 }
 
-.shot__clip {
+.view__clip {
   opacity: 0;
-  /* Promote once, up front — compositing the fade on the GPU keeps a 4K clip
-     from dropping frames on the first hover. */
+  /* Einmal vorab promoten — die Überblendung läuft dann auf der GPU und der
+     erste Hover verliert keine Frames. */
   will-change: opacity;
   transition: opacity var(--clip-fade) var(--ease);
 }
 
-.shot[data-clip='playing'] .shot__clip {
+.view[data-clip='playing'] .view__clip {
   opacity: 1;
 }
 
-.shot[data-clip='playing'] .shot__frame {
-  transform: scale(1.012);
-}
-
-.shot__meta {
-  display: grid;
-  gap: 0.5rem;
-  align-content: end;
-}
-
-.shot__index {
-  font-size: 0.75rem;
-  letter-spacing: 0.16em;
-  color: var(--ink-soft);
-}
-
-.shot__title {
-  font-family: 'Instrument Serif', ui-serif, Georgia, serif;
-  font-weight: 400;
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  line-height: 1.1;
+.hint {
   margin: 0;
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  transition: opacity var(--settle) var(--ease);
 }
 
-.shot__note {
-  margin: 0;
-  font-size: 0.9375rem;
-  color: var(--ink-soft);
-  text-wrap: pretty;
+/* Wer die Bewegung einmal gesehen hat, braucht den Hinweis nicht mehr. */
+.hint[data-spent] {
+  opacity: 0;
+}
+
+/* Ohne Hover und ohne Bewegung ist der Hinweis eine Lüge. */
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .hint {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .shot__frame,
-  .shot__clip {
+  .view,
+  .view__clip {
     transition: none;
   }
 }
 
+.caption {
+  text-align: center;
+  max-width: 44rem;
+}
+
+.caption__title {
+  margin: 0;
+  font-size: clamp(1.125rem, 2.2vw, 1.5rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.caption__where {
+  margin: 0.35rem 0 0;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
 /* ---------------------------------------------------------------------------
-   Close
+   Fuß
    --------------------------------------------------------------------------- */
 
-.close {
-  max-width: 78rem;
-  margin: clamp(5rem, 16vh, 12rem) auto 0;
-  padding: 0 var(--gutter) clamp(4rem, 12vh, 8rem);
-}
-
-.close__heading {
-  font-family: 'Instrument Serif', ui-serif, Georgia, serif;
-  font-weight: 400;
-  font-size: clamp(1.375rem, 2.5vw, 1.75rem);
-  margin: 0 0 1rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--hairline);
-}
-
-.close__heading + .aims {
-  margin-bottom: clamp(2.5rem, 6vw, 3.5rem);
-}
-
-.aims {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0.6rem;
-  max-width: var(--measure);
-  color: var(--ink-soft);
-}
-
-/* The secondary measures are a longer list; two columns keep the closing
-   section from turning into a scroll. */
-.aims--split {
-  max-width: none;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
-  gap: 0.6rem clamp(2rem, 5vw, 4rem);
-}
-
-.aims li {
-  padding-left: 1.1rem;
-  position: relative;
-  text-wrap: pretty;
-}
-
-.aims li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  /* Optically centred on the first line rather than the box. */
-  top: 0.66em;
-  width: 0.4rem;
-  height: 1px;
-  background: var(--ink-soft);
-}
-
-.facts {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
-  gap: 1.5rem 2rem;
-  margin: 0 0 clamp(2rem, 5vw, 3rem);
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--hairline);
-}
-
-.facts__row {
-  display: grid;
-  gap: 0.25rem;
-}
-
-.facts dt {
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem 1.5rem;
   font-size: 0.75rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   color: var(--ink-soft);
 }
 
-.facts dd {
+.foot p {
   margin: 0;
-  /* Figures in a spec table should align column-to-column. */
-  font-variant-numeric: tabular-nums;
-  font-size: 1.125rem;
-}
-
-/* The planner's own qualifier on the drawing. It belongs on the page, and it
-   belongs where nobody can miss it. */
-.close__note {
-  margin: 0 0 1.25rem;
-  max-width: var(--measure);
-  padding: 0.9rem 1.1rem;
-  border-left: 2px solid var(--ink);
-  background: #ece9e2;
   text-wrap: pretty;
 }
 
-.close__credit {
-  margin: 0;
-  max-width: var(--measure);
-  font-size: 0.875rem;
-  color: var(--ink-soft);
-  text-wrap: pretty;
+/* Der Vorbehalt der Planer — er soll gelesen werden können, aber die Ansicht
+   nicht überstimmen. */
+.foot__note {
+  color: var(--ink);
 }

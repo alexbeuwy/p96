@@ -1,9 +1,9 @@
 # Erweiterung der Hector-Stiftung — Am Schlossberg 2, Weinheim
 
 Einseitige Präsentationsseite zur Erweiterung und Fassadenneugestaltung
-(planwerkstatt 96, Bauherrschaft Hector Geschäftsführungs GmbH). Drei
-Darstellungen, die beim Überfahren in eine Videoschleife übergehen und beim
-Verlassen wieder zum Standbild werden.
+(planwerkstatt 96, Bauherrschaft Hector Geschäftsführungs GmbH). Eine Ansicht,
+die beim Überfahren in eine Kamerafahrt übergeht und beim Verlassen wieder
+zum Standbild wird.
 
 Zwei Vorbehalte stehen auf der Seite und sollten dort bleiben: der Planstand
 vom 01.07.2026 ist ein **Vorabzug**, und die Freianlagen sind eine
@@ -26,12 +26,18 @@ npm test           # Verhalten des Hover-Effekts im echten Browser
 
 ## Stack
 
-Vite + TypeScript, sonst nichts. Kein Framework — die Seite besteht aus drei
-Bildern, drei Videos und ungefähr 150 Zeilen Logik. React hätte hier mehr
+Vite + TypeScript, sonst nichts. Kein Framework — die Seite besteht aus einem
+Bild, einem Video und ungefähr 150 Zeilen Logik. React hätte hier mehr
 Laufzeit gekostet als die gesamte Seite wiegt.
 
-Die Inhalte stehen als normales HTML in `index.html`. Wer Text, Zahlen oder
-Bildunterschriften ändern will, muss kein JavaScript anfassen.
+Eine Schrift (Inter), eine Ansicht, keine Sektionen: alles passt ohne Scrollen
+auf einen Bildschirm, der Vorbehalt im Fuß eingeschlossen. Der Platzbedarf
+alles außer der Ansicht steht als `--chrome` in `src/styles.css` und ist
+gemessen, nicht geraten — deshalb stehen die Abstände dort in `rem` und nicht
+in `vh`.
+
+Die Inhalte stehen als normales HTML in `index.html`, die Wortmarke inline als
+SVG, damit ihre Farbe per `currentColor` mitläuft.
 
 ## Wie der Effekt funktioniert
 
@@ -42,8 +48,8 @@ wird erst eingeblendet, wenn es tatsächlich `playing` meldet — nicht wenn der
 Zeiger ankommt. Sonst sieht man den schwarzen ersten Frame oder ein Ruckeln
 beim Dekodieren, und die Illusion ist weg.
 
-**Videos werden erst beim ersten Hover geladen.** Die `<source>`-Elemente
-tragen `data-src` statt `src`. Drei Clips zu je 4 MB beim Seitenaufruf würden
+**Das Video wird erst beim ersten Hover geladen.** Die `<source>`-Elemente
+tragen `data-src` statt `src`. Ein MB beim Seitenaufruf mitzuschleppen würde
 genau das kaputtmachen, was die Seite leisten soll: in einer Präsentation
 sofort da sein.
 
@@ -53,10 +59,10 @@ Fehler.
 
 Dazu drei Fälle, die eine Hover-Lösung sonst übersieht:
 
-- **Touch** kennt kein Hover. Auf dem Handy spielt der Clip, der gerade mittig
-  im Bild steht (`IntersectionObserver`).
+- **Touch** kennt kein Hover. Auf dem Handy startet der Clip, sobald die
+  Ansicht mittig im Bild steht (`IntersectionObserver`).
 - **`prefers-reduced-motion`** schaltet den Effekt komplett ab — er *ist*
-  Bewegung, hier gibt es nichts abzuschwächen. Dann bleiben drei Standbilder.
+  Bewegung, hier gibt es nichts abzuschwächen. Dann bleibt das Standbild.
 - **Fehlender oder kaputter Clip** fällt auf das Standbild zurück. Die Seite
   sieht dann ruhiger aus, aber nie defekt.
 
@@ -65,14 +71,13 @@ denselben Wert haben.
 
 ## Medien
 
-Die aktuellen Dateien in `public/media/` sind Platzhalter, damit die Seite
-sofort läuft. **`docs/medien.md` vor dem Generieren der KI-Clips lesen** —
-dort stehen Dateinamen, Prompt-Bausteine, die getesteten ffmpeg-Kommandos und
-die zwei Regeln, an denen der Effekt hängt: Frame 0 des Clips muss exakt das
-Standbild sein, und der Clip muss nahtlos schleifen.
+**`docs/medien.md` lesen, bevor Medien getauscht werden.** Dort steht die eine
+Regel, an der alles hängt — Frame 0 des Clips muss exakt das Standbild sein —
+und warum das Standbild deshalb aus dem Clip extrahiert wird statt separat
+geliefert zu werden.
 
 Das Seitenverhältnis steht an einer Stelle: `--shot-aspect` in
-`src/styles.css` (derzeit 16:9). Standbild und Clip müssen es teilen.
+`src/styles.css`. Standbild und Clip müssen es teilen.
 
 ## Deploy über Vercel
 
@@ -96,7 +101,7 @@ Sobald die echten Clips auf Bunny liegen, wird im Vercel-Dashboard unter
 Settings → Environment Variables gesetzt:
 
 ```
-VITE_MEDIA_BASE = https://<pull-zone>.b-cdn.net/p96     (Scope: Production)
+VITE_MEDIA_BASE = https://<pull-zone>.b-cdn.net/P96     (Scope: Production)
 ```
 
 Das überschreibt `.env.production` beim Build. Umschalten und Zurückschalten
@@ -105,12 +110,13 @@ Klick.
 
 ```bash
 cp .env.example .env.local     # Storage-Key eintragen
-npm run media:push             # public/media/ → storage.bunnycdn.com/beuwy/p96/
+npm run media:push             # public/media/ → storage.bunnycdn.com/beuwy/P96/
 ```
 
-Standbilder (~25 kB) dürfen im Repo bleiben. Die echten Clips (~4 MB pro
-Stück) gehören auf Bunny: Git ist kein Videohosting, und Vercel rechnet
-ausgehenden Traffic mit ab.
+Das Standbild (241 kB) und der aktuelle Clip (1,0 MB WebM / 1,6 MB MP4) liegen
+im Repo, damit jeder Deploy ohne Bunny funktioniert. Sobald mehr Ansichten
+dazukommen, gehören die Clips auf Bunny: Git ist kein Videohosting, und Vercel
+rechnet ausgehenden Traffic mit ab.
 
 > **Zum Schlüssel:** Der Storage-Key ist das Passwort für die gesamte Zone —
 > damit kann man alles lesen, überschreiben und löschen. Er gehört in
@@ -120,7 +126,7 @@ ausgehenden Traffic mit ab.
 
 ## Schriften
 
-Instrument Serif und Inter werden über `@fontsource` selbst ausgeliefert. Kein
+Inter wird über `@fontsource` selbst ausgeliefert (Latin-Subset). Kein
 Request an Google — bei einem deutschen Kunden ist das nicht Optimierung,
 sondern DSGVO (LG München I, 3 O 17493/20). Nebeneffekt: funktioniert auch
 ohne Netz im Besprechungsraum.

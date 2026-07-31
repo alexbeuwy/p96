@@ -68,7 +68,7 @@ try {
 
     await page.goto(URL, { waitUntil: 'networkidle' });
 
-    const shot = page.locator('.shot').first();
+    const shot = page.locator('.view').first();
     const video = shot.locator('video');
 
     check('starts idle', (await shot.getAttribute('data-clip')) === 'idle');
@@ -78,7 +78,7 @@ try {
     await shot.hover();
     await page
       .waitForFunction(
-        () => document.querySelector('.shot')?.getAttribute('data-clip') === 'playing',
+        () => document.querySelector('.view')?.getAttribute('data-clip') === 'playing',
         null,
         { timeout: 5000 },
       )
@@ -87,9 +87,12 @@ try {
     check('hover starts the clip', (await shot.getAttribute('data-clip')) === 'playing');
     check(
       'source attached lazily',
-      (await video.evaluate((v) => v.currentSrc)).endsWith('01-strasse.webm'),
+      (await video.evaluate((v) => v.currentSrc)).endsWith('eingang.webm'),
     );
-    check('clip is muted and looping', await video.evaluate((v) => v.muted && v.loop));
+    // Der Clip ist eine Kamerafahrt, kein Ambient-Loop: er darf nicht schleifen,
+    // sonst springt die Kamera alle sechs Sekunden zurück.
+    check('clip is muted', await video.evaluate((v) => v.muted));
+    check('clip does not loop', await video.evaluate((v) => !v.loop));
 
     await page.waitForTimeout(600); // the crossfade is 420ms
     check('clip fully faded in', (await video.evaluate((v) => getComputedStyle(v).opacity)) === '1');
@@ -105,10 +108,6 @@ try {
     check('clip paused on leave', await video.evaluate((v) => v.paused));
     check('clip rewound', (await video.evaluate((v) => v.currentTime)) === 0);
 
-    check(
-      'un-hovered cards stay lazy',
-      (await page.locator('.shot').nth(2).locator('video').evaluate((v) => v.currentSrc)) === '',
-    );
     check('no console or network errors', errors.length === 0, errors.join(' | '));
     await context.close();
   }
@@ -121,7 +120,7 @@ try {
     });
     const page = await context.newPage();
     await page.goto(URL, { waitUntil: 'networkidle' });
-    const shot = page.locator('.shot').first();
+    const shot = page.locator('.view').first();
     await shot.hover();
     await page.waitForTimeout(900);
     check('reduced motion keeps the still', (await shot.getAttribute('data-clip')) === 'idle');
@@ -137,11 +136,11 @@ try {
     const context = await browser.newContext({ ...devices['iPhone 13'] });
     const page = await context.newPage();
     await page.goto(URL, { waitUntil: 'networkidle' });
-    const shot = page.locator('.shot').first();
+    const shot = page.locator('.view').first();
     await shot.scrollIntoViewIfNeeded();
     await page
       .waitForFunction(
-        () => document.querySelector('.shot')?.getAttribute('data-clip') === 'playing',
+        () => document.querySelector('.view')?.getAttribute('data-clip') === 'playing',
         null,
         { timeout: 6000 },
       )
@@ -158,7 +157,7 @@ try {
     await page.route('**/*.webm', (r) => r.fulfill({ status: 404, body: '' }));
     await page.route('**/*.mp4', (r) => r.fulfill({ status: 404, body: '' }));
     await page.goto(URL, { waitUntil: 'networkidle' });
-    const shot = page.locator('.shot').first();
+    const shot = page.locator('.view').first();
     await shot.hover();
     await page.waitForTimeout(1200);
     check('missing clip falls back to the still', (await shot.getAttribute('data-clip')) === 'idle');

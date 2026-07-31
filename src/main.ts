@@ -1,8 +1,5 @@
-// Only the cuts actually used: regular + italic display, regular/medium body.
-// Latin subset only — deutsche Umlaute und ß liegen darin, latin-ext wäre
-// rund 160 kB Schriftdaten für Zeichen, die auf dieser Seite nicht vorkommen.
-import '@fontsource/instrument-serif/latin-400.css';
-import '@fontsource/instrument-serif/latin-400-italic.css';
+// Eine Schrift genügt: die Wortmarke ist eine geometrische Grotesk, Inter
+// steht daneben ohne Bruch. Latin-Subset — deutsche Umlaute und ß liegen darin.
 import '@fontsource/inter/latin-400.css';
 import '@fontsource/inter/latin-500.css';
 
@@ -11,14 +8,17 @@ import { initHoverClips } from './hover-video';
 
 initHoverClips();
 
-// The "hover for motion" line is scaffolding for the first few seconds. Once
-// the viewer has discovered the effect once, it retires itself.
+// Der Hinweis ist Gerüst für die ersten Sekunden. Wer die Bewegung einmal
+// ausgelöst hat, braucht ihn nicht mehr.
 const hint = document.querySelector<HTMLElement>('[data-hint]');
 if (hint) {
-  const retire = (): void => {
-    hint.dataset.spent = '';
-  };
-  for (const shot of document.querySelectorAll('[data-clip]')) {
-    shot.addEventListener('pointerenter', retire, { once: true });
+  for (const view of document.querySelectorAll('[data-clip]')) {
+    view.addEventListener(
+      'pointerenter',
+      () => {
+        hint.dataset.spent = '';
+      },
+      { once: true },
+    );
   }
 }
