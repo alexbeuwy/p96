@@ -7,3 +7,7 @@ dist/
 # Source video masters — commit only the web-encoded files in public/media/
 *.mov
 *.prores.mp4
+
+# Python-Bytecode aus den Skill-Skripten
+__pycache__/
+*.pyc

@@ -1,9 +1,10 @@
 # Erweiterung der Hector-Stiftung — Am Schlossberg 2, Weinheim
 
 Einseitige Präsentationsseite zur Erweiterung und Fassadenneugestaltung
-(planwerkstatt 96, Bauherrschaft Hector Geschäftsführungs GmbH). Eine Ansicht,
-die beim Überfahren in eine Kamerafahrt übergeht und beim Verlassen wieder
-zum Standbild wird.
+(Planwerkstatt 96, Bauherrschaft Hector Geschäftsführungs GmbH). Drei
+Renderings, die beim Überfahren in eine Kamerafahrt übergehen und beim
+Verlassen wieder zum Standbild werden, dazu Kennzahlen, Vorteile und
+Mikrolage.
 
 Zwei Vorbehalte stehen auf der Seite und sollten dort bleiben: der Planstand
 vom 01.07.2026 ist ein **Vorabzug**, und die Freianlagen sind eine
@@ -26,18 +27,32 @@ npm test           # Verhalten des Hover-Effekts im echten Browser
 
 ## Stack
 
-Vite + TypeScript, sonst nichts. Kein Framework — die Seite besteht aus einem
-Bild, einem Video und ungefähr 150 Zeilen Logik. React hätte hier mehr
+Vite + TypeScript, sonst nichts. Kein Framework — die Seite besteht aus vier
+Bildern, drei Videos und ungefähr 250 Zeilen Logik. React hätte hier mehr
 Laufzeit gekostet als die gesamte Seite wiegt.
 
-Eine Schrift (Inter), eine Ansicht, keine Sektionen: alles passt ohne Scrollen
-auf einen Bildschirm, der Vorbehalt im Fuß eingeschlossen. Der Platzbedarf
-alles außer der Ansicht steht als `--chrome` in `src/styles.css` und ist
-gemessen, nicht geraten — deshalb stehen die Abstände dort in `rem` und nicht
-in `vh`.
+Aufbau: bildschirmfüllender Hero, dann je Szene eine randlose Bühne mit dem
+Hover-Effekt und darunter ein Bento-Raster mit den Vorteilen. Die Kachelbreiten
+stehen als `--span` im 12er-Raster am Element — bewusst ungleich, damit das
+Raster nicht als Reihe gleicher Kacheln liest.
 
-Die Inhalte stehen als normales HTML in `index.html`, die Wortmarke inline als
-SVG, damit ihre Farbe per `currentColor` mitläuft.
+Eine Schrift (Outfit), ein Akzent, ein Icon-Satz. Die Icons liegen als
+`<symbol>` in `src/icons.svg`, die Wortmarke in `src/logo.svg`; beide sind in
+`index.html` eingebettet, damit ihre Farbe per `currentColor` mitläuft — als
+`<img>` ginge das nicht. Wer Icons oder Logo ändert, muss die Einbettung in
+`index.html` mitziehen. 24er Raster, Strichstärke 1.6, keine Emojis.
+
+Die Strichattribute stehen auf jedem `<symbol>` selbst: über eine gemeinsame
+`<defs>`-Gruppe vererben sie sich nicht, die Symbole rendern sonst als
+gefüllte Flächen.
+
+Die Bewegung folgt den Motion-Tokens aus `transitions.dev`: Einblenden 400 ms,
+Ausblenden 350 ms, Staffelung 40 ms, `cubic-bezier(0.22, 1, 0.36, 1)`.
+Animiert werden ausschließlich `transform` und `opacity`.
+
+Die Reveal-Regel hängt an einer `.js`-Klasse, die ein Inline-Skript im Kopf
+setzt. Bliebe das Modul aus, wäre die halbe Seite sonst unsichtbar statt
+unanimiert.
 
 ## Wie der Effekt funktioniert
 

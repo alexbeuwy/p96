@@ -4,101 +4,485 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="theme-color" content="#f5f3ef" />
-    <title>Erweiterung der Hector-Stiftung — planwerkstatt96</title>
-    <meta
-      name="description"
-      content="Erweiterung der Hector-Stiftung und Fassadenneugestaltung, Am Schlossberg 2, Weinheim."
-    />
+    <meta name="theme-color" content="#14161a" />
+    <title>Effiziente Modernisierung des Ärztehauses der Hector Stiftung — Weinheim</title>
+    <meta name="description"
+      content="Effiziente Modernisierung des Ärztehauses der Hector Stiftung, Am Schloßberg 2, 69469 Weinheim. Planung Planwerkstatt 96." />
     <!-- Nicht freigegebener Planungsstand: nicht für Suchmaschinen. -->
     <meta name="robots" content="noindex, nofollow" />
-
+    <link rel="preload" as="image" href="%VITE_MEDIA_BASE%/hero.webp" fetchpriority="high" />
     <!--
-      Schriften werden selbst gehostet (@fontsource, siehe src/main.ts) - kein
+      Die Reveal-Animation setzt Elemente auf opacity:0. Bliebe das Modul aus
+      (Netzfehler, alter Browser), wäre die halbe Seite unsichtbar. Deshalb
+      greift die Regel nur, wenn dieses Skript lief — es steht inline im Kopf
+      und damit vor dem ersten Frame.
+    -->
+    <script>document.documentElement.classList.add('js')</script>
+    <!--
+      Schriften werden selbst gehostet (@fontsource, siehe src/main.ts) — kein
       Request an fonts.gstatic.com. Das ist hier keine Optimierung, sondern
       Pflicht: die Einbindung von Google Fonts überträgt die IP des Besuchers
       in die USA und ist damit nach LG München I, 3 O 17493/20 ohne
-      Einwilligung ein DSGVO-Verstoß. Nebeneffekt: die Seite rendert auch
-      dann korrekt, wenn das WLAN im Besprechungsraum nicht mitspielt.
+      Einwilligung ein DSGVO-Verstoß.
     -->
   </head>
 
   <body>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+      <!--
+        Ein Satz, eine Sprache: 24x24-Raster, Strichstärke 1.6, runde Enden,
+        keine Füllungen. Als <symbol> abgelegt und per <use> referenziert, damit
+        jedes Icon nur einmal im Dokument steht. Die Strichattribute stehen auf
+        jedem <symbol> selbst: über eine gemeinsame <defs>-Gruppe vererben sie
+        sich nicht, die Symbole rendern sonst als gefüllte Flächen.
+      -->
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-facade" viewBox="0 0 24 24">
+        <path d="M4 21V7l8-4 8 4v14" /><path d="M9 21V9m3 12V9m3 12V9" /><path d="M2 21h20" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-sun" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-energy" viewBox="0 0 24 24">
+        <path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12z" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-car" viewBox="0 0 24 24">
+        <path d="M5 17h14M3 17v-4l2-5h14l2 5v4" /><path d="M3 17v2h3v-2m12 0v2h3v-2" />
+        <circle cx="7.5" cy="13.5" r="1" /><circle cx="16.5" cy="13.5" r="1" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-barrier" viewBox="0 0 24 24">
+        <path d="M4 21V4" /><path d="M4 7h16l-2 4H4z" /><path d="M4 21h6" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-walk" viewBox="0 0 24 24">
+        <circle cx="13" cy="4" r="1.8" />
+        <path d="M11 21l1.5-6L10 12l1-5 3 2 3 1" /><path d="M12.5 15 9 21" /><path d="M11 7 8 9" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-narrow" viewBox="0 0 24 24">
+        <path d="M4 3v18M20 3v18" /><path d="M9 8h6M9 16h6" /><path d="M11 6 9 8l2 2m2 4 2 2-2 2" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-tree" viewBox="0 0 24 24">
+        <path d="M12 21v-5" /><path d="M12 16a5 5 0 0 0 1.6-9.7A4 4 0 0 0 6.6 8 4 4 0 0 0 8 16z" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-waste" viewBox="0 0 24 24">
+        <path d="M4 7h16" /><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+        <path d="M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13" /><path d="M10 11v6m4-6v6" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-water" viewBox="0 0 24 24">
+        <path d="M12 3s5.5 6 5.5 9.5a5.5 5.5 0 0 1-11 0C6.5 9 12 3 12 3z" /><path d="M9.5 13a2.5 2.5 0 0 0 2.5 2.5" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-bike" viewBox="0 0 24 24">
+        <circle cx="5.5" cy="17" r="3.2" /><circle cx="18.5" cy="17" r="3.2" />
+        <path d="M5.5 17 10 8h4l3 9" /><path d="M9 8h5" /><path d="M12 17H8" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-greenroof" viewBox="0 0 24 24">
+        <path d="M3 12 12 5l9 7" /><path d="M5 12v8h14v-8" />
+        <path d="M9 16a3 3 0 0 1 3-3 3 3 0 0 1 3 3" /><path d="M12 20v-4" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-access" viewBox="0 0 24 24">
+        <circle cx="12" cy="4.5" r="1.8" />
+        <path d="M12 7v5h4" /><circle cx="11" cy="16" r="5" /><path d="M16 12l2 6h2" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-charge" viewBox="0 0 24 24">
+        <path d="M5 21V5a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v16" /><path d="M3 21h13" />
+        <path d="M14 9h3a2 2 0 0 1 2 2v5a1.5 1.5 0 0 0 3 0v-6l-2-2" /><path d="M10 7 8 11h3l-1 3" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-fire" viewBox="0 0 24 24">
+        <path d="M3 18h18" /><path d="M5 18v-5h9v5" /><path d="M14 15h5l2-3v6" />
+        <circle cx="8" cy="18" r="1.6" /><circle cx="17" cy="18" r="1.6" /><path d="M8 13V9h4" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-pipe" viewBox="0 0 24 24">
+        <path d="M3 8h7a3 3 0 0 1 3 3v2a3 3 0 0 0 3 3h5" />
+        <path d="M3 6v4M21 14v4" /><circle cx="13" cy="12" r="1" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-bus" viewBox="0 0 24 24">
+        <rect x="4" y="3" width="16" height="14" rx="2" /><path d="M4 9h16" />
+        <path d="M7 17v3m10-3v3" /><circle cx="8" cy="13.5" r="1" /><circle cx="16" cy="13.5" r="1" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-town" viewBox="0 0 24 24">
+        <path d="M3 21h18" /><path d="M5 21V9l7-5 7 5v12" /><path d="M9 21v-6h6v6" /><path d="M12 4V2" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-health" viewBox="0 0 24 24">
+        <rect x="3" y="6" width="18" height="14" rx="2" /><path d="M8 6V4h8v2" /><path d="M12 10v6m-3-3h6" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-ruler" viewBox="0 0 24 24">
+        <rect x="2" y="8" width="20" height="8" rx="1" />
+        <path d="M6 8v3m4-3v4m4-4v3m4-3v4" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-level" viewBox="0 0 24 24">
+        <path d="M3 20h18" /><path d="M12 4v10" /><path d="M8 8l4-4 4 4" /><path d="M5 16h14" />
+      </symbol>
+
+      <symbol fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" id="ic-shield" viewBox="0 0 24 24">
+        <path d="M12 3l7 3v6c0 4-3 7.5-7 9-4-1.5-7-5-7-9V6z" /><path d="M9.5 12l2 2 3.5-4" />
+      </symbol>
+    </svg>
+
     <header class="top">
       <!-- Inline statt <img>, damit die Farbe per currentColor mitläuft. -->
-        <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1909.13 275.44" fill="currentColor" role="img" aria-label="planwerkstatt 96">
-          <g>
-            <polygon fill="none" points="215.13 143.4 215.16 184.05 248.26 184.04 248.24 125.09 215.13 143.4"/>
-            <polygon fill="none" points="29.57 151.1 29.57 241.25 71.07 241.26 71.07 129.82 29.57 151.1"/>
-            <polygon fill="none" points="323.13 213.31 323.14 241.3 357.59 241.24 357.54 213.33 323.13 213.31"/>
-            <path d="M184.95,0l-113.78,58.83-.13,38.43L0,133.66l.13,136.9,169.88.02.03-29.28-69.67-.05.12-110.96,40.29,20.76v62.28s29.28-.04,29.28-.04l-.03-79.7-69.58-36.26.22-20.88,84.29-43.76,71.78,37.01,30.48-16.7-56.82-29.78L184.95,0ZM29.57,241.25v-90.15s41.51-21.28,41.51-21.28v111.44s-41.51-.02-41.51-.02Z"/>
-            <path d="M386.88,184.04h-63.77s.03-79.38.03-79.38l34.42,18.41.12,32.99,29.22-.1-.08-50.6-82-43.17-11.28,6.34v202.01s93.37.02,93.37.02l-.03-86.52ZM323.14,241.3v-27.99s34.4.02,34.4.02l.05,27.91-34.45.06Z"/>
-            <path d="M185.83,126.26v87.07s62.42-.01,62.42-.01l-.13,27.96h-62.3s.05,29.31.05,29.31l91.72-.05-.1-194.13-91.66,49.86ZM215.16,184.05l-.03-40.65,33.11-18.32.02,58.95h-33.1Z"/>
-          </g>
-          <g>
-            <path d="M1688.25,204.46l29.26-.44c3.25,6.56,7.84,12.67,12.78,13.59,7.25,1.36,16.07.52,21.2-3.85,9.08-7.74,11.52-20.61,11.67-30.66-19.43,17.93-51.75,16.12-68.09-4.51-13.55-17.11-11.42-42.63,1.55-58.87,10.49-13.14,26.22-16.64,42.29-16.72,23.66-.11,43.46,13.07,49.82,36.13,6.17,22.36,5.73,46.46-1.7,68.17-8.61,25.17-30.75,37.38-56.56,34.25-20.01-2.43-38.53-11.77-42.23-37.08ZM1760.22,152.33c1.26-14.65-7.77-25.07-20.22-26.06-11.74-.93-22.2,5.96-23.93,18.75-1.85,13.69,5.36,24.95,17.87,26.96s24.95-4.31,26.28-19.65Z"/>
-            <path d="M1833.4,160.9c19.4-16.77,51.26-14.71,67,5.91,13.22,17.32,10.7,43.66-2.66,59.66-10.56,12.64-26.64,15.49-42.12,15.15-23.32-.52-41.69-14.27-47.8-36.45-6.08-22.09-5.66-44.93,1.5-66.53,8.58-25.87,32.01-38.83,58.75-35.26,19.93,2.66,36.81,13.77,38.38,36.82l-27.69-.04c-4.24-6.84-9.63-13.23-16.18-13.92-8.95-.94-17.48,2.07-22.25,10.1-4.41,7.44-6.38,17.17-6.94,24.57ZM1875.75,208.35c7.51-12.84,2.22-28.62-9.44-33.39-11.74-4.8-26.85-.14-30.15,12.65-2.88,11.17,1.74,23.18,10.64,27.61,9.51,4.74,22.89,3.47,28.94-6.88Z"/>
-            <polygon points="949.5 140.51 979.83 140.44 948.91 239.06 918.21 239.23 900.59 177.52 883.06 239.06 852.72 239.44 821.68 140.38 852.23 140.23 869.16 204.15 886.96 140.4 914.84 140.21 932.57 204.63 949.5 140.51"/>
-            <path d="M480.93,275.37l-29.46.07-.05-134.99,27.96-.4.48,11.44c9.75-11.93,22.92-15.56,39.11-12.69,31.08,5.51,43.13,45.4,29.98,78.16-5.32,13.25-16.95,21.24-28.19,23.46-15.83,3.13-28.8-.71-39.57-12.6l-.26,47.54ZM518.1,210.49c12.18-17.39,6.18-45.97-11.29-48.85-8.46-1.39-17.3.81-21.57,8.32-10.55,18.5-2.98,45.36,13.95,47.73,6.17.86,15.02-1.64,18.92-7.2Z"/>
-            <polygon points="1269.53 238.51 1235.67 239.19 1208.8 197.47 1198.41 208.7 1198.13 239.21 1168.87 239.33 1168.82 102.51 1198.22 101.92 1198.5 175.43 1234.47 139.85 1267.18 140.73 1230.13 178.13 1269.53 238.51"/>
-            <path d="M676.02,230.22c-17.51,18.93-57.37,13.56-64.51-8.88-3.9-12.25-1.48-26.85,10.07-33.59,25.02-14.58,54.44-3.72,53.77-18.72-.31-6.93-6.17-10.24-12.85-10.45-10.12-.33-18.94,1.77-19.86,13.92l-27.98-.03c-.35-15.02,7.86-26.24,21.52-30.87,15.36-5.21,32.52-4.83,48.18.02,12.27,3.8,20.36,14.92,20.45,27.9l.38,52.82,2.71,16.87-26.89.17-5-9.16ZM650.49,221.37c7.38.82,16.33-1.64,20.31-6.57,4.08-5.05,4.87-12.76,5.31-21.22l-29,5.21c-5.02.9-8.81,8.93-7.67,13.52,1.02,4.09,5.87,8.49,11.05,9.06Z"/>
-            <path d="M1502.89,230.23c-10.05,11.54-25.77,12.76-40.46,10.22-14.56-2.51-24.42-12.71-25.66-25.82-1.43-15.07,6.56-26.85,22.15-31.29l32.13-5.21c5.98-.97,11.64-3.82,11.51-9.15-.14-5.68-5.46-9.82-11.08-10.3-11.03-.94-20.67,1.04-21.91,13.73l-27.4.17c-.7-13.76,6.71-26.24,20.75-30.92,29.63-9.89,68.59-1.99,68.84,27.12l.42,49.22,2.3,21.18-26.61.18-4.98-9.14ZM1478.05,221.5c7.97.62,15.99-1.87,19.75-6.38,4.28-5.12,5.1-12.25,5.64-21.67l-29.47,5.59c-4.36.83-8.44,9.38-7.51,13.24s5.75,8.77,11.58,9.22Z"/>
-            <path d="M1051.29,207.89l28.33.11c-3.57,21.87-23.11,32.74-44.44,33.69-30.81,1.36-54.72-19.6-54.53-51.01.08-14.61,3.16-29.38,14.85-39.7,18.41-16.26,48-18.2,67.94-3.22,15.23,11.44,19.57,31,17.83,49.39l-71.35.09c.89,10.11,7,18.31,15.57,20.99,9.9,3.1,19.97.86,25.8-10.33ZM1051.95,178.25c-1.99-14.06-11.48-19.6-22.04-19.31-9.99.27-18.48,7.42-19.37,19.46l41.41-.15Z"/>
-            <path d="M751.91,179.23l-.22,59.99-29.42-.09-.03-98.67,27.79-.47.96,12.3c8.41-11.54,20.02-15.18,34.48-14.06,15.75,1.22,30.3,12.66,30.51,30.1l.88,70.76-29.24.31-.86-64.83c-.13-9.57-11.87-13.08-18.93-12.34-7.13.75-15.87,7.26-15.91,17Z"/>
-            <path d="M1362.21,211.59c-2.51,30.33-41.94,35.02-70.21,26.57-14.3-4.27-23.21-15.11-23.47-31.39l28.15.12c2.41,14.58,14.55,16.7,30.37,13.55,2.91-.58,7.1-6.94,6.63-9.81-.48-2.86-5.3-6.93-8.45-7.62l-32.6-7.18c-12.94-2.85-20.57-13.6-21.22-24.74-.77-13.12,5.83-24.44,19.05-29.17,15.63-5.59,33.65-5.65,49.18.25,12.09,4.59,19.27,14.28,19.49,28.43l-25.89.27c-3.33-12.23-12.25-14.41-23.64-13.18-3.51.38-9.09,4.17-9.85,7.48-.94,4.1,4.23,9.3,8.8,10.3l35.76,7.78c13.3,2.9,18.94,15.62,17.89,28.34Z"/>
-            <path d="M1604.6,215.26l.69,23.61c-24.69,4.13-49.48-1.15-49.57-22.96l-.22-54.13-15.84-.42-.07-20.9,15.79-.58.31-29.62,28.46.11.35,29.84,20.24-.08.09,21.15-20.73.45.88,48.05c.1,5.57,10.35,8.39,19.64,5.49Z"/>
-            <path d="M1429.53,216.15l.79,22.77c-24.59,4.27-49.24-1.5-49.4-23.24l-.4-54.02-15.74-.13-.11-21.08,15.75-.61.28-29.58h29s.05,29.64.05,29.64l19.76.38-.14,21.31-19.76.08.51,49.86c3.1,3.85,9.76,5.21,19.41,4.62Z"/>
-            <path d="M1676.67,215.92l-.1,23.3-27.11-.2c-13.02-.09-22.22-12.46-22.25-25.39l-.12-51.87-15.33-.29.02-21.03,15.19-.38.31-29.67,28.77-.17.31,29.72,20.03.42.04,21.26-20.36-.33.52,49.77c2.62,4.41,11.19,5.83,20.09,4.84Z"/>
-            <polygon points="597.13 238.82 567.08 239.11 567.11 102.18 597.03 102.16 597.13 238.82"/>
-            <path d="M1124.14,239.14l-29.54.04v-98.83s28.08-.26,28.08-.26l.6,14.02c8.12-11.92,19.66-18.25,34.88-15.33l-.41,27.13c-11.21-.78-18.1-.43-25.52,4.41-4.88,3.18-8.19,12.96-8.18,20.15l.09,48.67Z"/>
-          </g>
-        </svg>
-      <span class="top__meta">Vorabzug &middot; 01.07.2026</span>
+      <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1909.13 275.44" fill="currentColor" role="img" aria-label="planwerkstatt 96">
+        <g>
+          <polygon fill="none" points="215.13 143.4 215.16 184.05 248.26 184.04 248.24 125.09 215.13 143.4"/>
+          <polygon fill="none" points="29.57 151.1 29.57 241.25 71.07 241.26 71.07 129.82 29.57 151.1"/>
+          <polygon fill="none" points="323.13 213.31 323.14 241.3 357.59 241.24 357.54 213.33 323.13 213.31"/>
+          <path d="M184.95,0l-113.78,58.83-.13,38.43L0,133.66l.13,136.9,169.88.02.03-29.28-69.67-.05.12-110.96,40.29,20.76v62.28s29.28-.04,29.28-.04l-.03-79.7-69.58-36.26.22-20.88,84.29-43.76,71.78,37.01,30.48-16.7-56.82-29.78L184.95,0ZM29.57,241.25v-90.15s41.51-21.28,41.51-21.28v111.44s-41.51-.02-41.51-.02Z"/>
+          <path d="M386.88,184.04h-63.77s.03-79.38.03-79.38l34.42,18.41.12,32.99,29.22-.1-.08-50.6-82-43.17-11.28,6.34v202.01s93.37.02,93.37.02l-.03-86.52ZM323.14,241.3v-27.99s34.4.02,34.4.02l.05,27.91-34.45.06Z"/>
+          <path d="M185.83,126.26v87.07s62.42-.01,62.42-.01l-.13,27.96h-62.3s.05,29.31.05,29.31l91.72-.05-.1-194.13-91.66,49.86ZM215.16,184.05l-.03-40.65,33.11-18.32.02,58.95h-33.1Z"/>
+        </g>
+        <g>
+          <path d="M1688.25,204.46l29.26-.44c3.25,6.56,7.84,12.67,12.78,13.59,7.25,1.36,16.07.52,21.2-3.85,9.08-7.74,11.52-20.61,11.67-30.66-19.43,17.93-51.75,16.12-68.09-4.51-13.55-17.11-11.42-42.63,1.55-58.87,10.49-13.14,26.22-16.64,42.29-16.72,23.66-.11,43.46,13.07,49.82,36.13,6.17,22.36,5.73,46.46-1.7,68.17-8.61,25.17-30.75,37.38-56.56,34.25-20.01-2.43-38.53-11.77-42.23-37.08ZM1760.22,152.33c1.26-14.65-7.77-25.07-20.22-26.06-11.74-.93-22.2,5.96-23.93,18.75-1.85,13.69,5.36,24.95,17.87,26.96s24.95-4.31,26.28-19.65Z"/>
+          <path d="M1833.4,160.9c19.4-16.77,51.26-14.71,67,5.91,13.22,17.32,10.7,43.66-2.66,59.66-10.56,12.64-26.64,15.49-42.12,15.15-23.32-.52-41.69-14.27-47.8-36.45-6.08-22.09-5.66-44.93,1.5-66.53,8.58-25.87,32.01-38.83,58.75-35.26,19.93,2.66,36.81,13.77,38.38,36.82l-27.69-.04c-4.24-6.84-9.63-13.23-16.18-13.92-8.95-.94-17.48,2.07-22.25,10.1-4.41,7.44-6.38,17.17-6.94,24.57ZM1875.75,208.35c7.51-12.84,2.22-28.62-9.44-33.39-11.74-4.8-26.85-.14-30.15,12.65-2.88,11.17,1.74,23.18,10.64,27.61,9.51,4.74,22.89,3.47,28.94-6.88Z"/>
+          <polygon points="949.5 140.51 979.83 140.44 948.91 239.06 918.21 239.23 900.59 177.52 883.06 239.06 852.72 239.44 821.68 140.38 852.23 140.23 869.16 204.15 886.96 140.4 914.84 140.21 932.57 204.63 949.5 140.51"/>
+          <path d="M480.93,275.37l-29.46.07-.05-134.99,27.96-.4.48,11.44c9.75-11.93,22.92-15.56,39.11-12.69,31.08,5.51,43.13,45.4,29.98,78.16-5.32,13.25-16.95,21.24-28.19,23.46-15.83,3.13-28.8-.71-39.57-12.6l-.26,47.54ZM518.1,210.49c12.18-17.39,6.18-45.97-11.29-48.85-8.46-1.39-17.3.81-21.57,8.32-10.55,18.5-2.98,45.36,13.95,47.73,6.17.86,15.02-1.64,18.92-7.2Z"/>
+          <polygon points="1269.53 238.51 1235.67 239.19 1208.8 197.47 1198.41 208.7 1198.13 239.21 1168.87 239.33 1168.82 102.51 1198.22 101.92 1198.5 175.43 1234.47 139.85 1267.18 140.73 1230.13 178.13 1269.53 238.51"/>
+          <path d="M676.02,230.22c-17.51,18.93-57.37,13.56-64.51-8.88-3.9-12.25-1.48-26.85,10.07-33.59,25.02-14.58,54.44-3.72,53.77-18.72-.31-6.93-6.17-10.24-12.85-10.45-10.12-.33-18.94,1.77-19.86,13.92l-27.98-.03c-.35-15.02,7.86-26.24,21.52-30.87,15.36-5.21,32.52-4.83,48.18.02,12.27,3.8,20.36,14.92,20.45,27.9l.38,52.82,2.71,16.87-26.89.17-5-9.16ZM650.49,221.37c7.38.82,16.33-1.64,20.31-6.57,4.08-5.05,4.87-12.76,5.31-21.22l-29,5.21c-5.02.9-8.81,8.93-7.67,13.52,1.02,4.09,5.87,8.49,11.05,9.06Z"/>
+          <path d="M1502.89,230.23c-10.05,11.54-25.77,12.76-40.46,10.22-14.56-2.51-24.42-12.71-25.66-25.82-1.43-15.07,6.56-26.85,22.15-31.29l32.13-5.21c5.98-.97,11.64-3.82,11.51-9.15-.14-5.68-5.46-9.82-11.08-10.3-11.03-.94-20.67,1.04-21.91,13.73l-27.4.17c-.7-13.76,6.71-26.24,20.75-30.92,29.63-9.89,68.59-1.99,68.84,27.12l.42,49.22,2.3,21.18-26.61.18-4.98-9.14ZM1478.05,221.5c7.97.62,15.99-1.87,19.75-6.38,4.28-5.12,5.1-12.25,5.64-21.67l-29.47,5.59c-4.36.83-8.44,9.38-7.51,13.24s5.75,8.77,11.58,9.22Z"/>
+          <path d="M1051.29,207.89l28.33.11c-3.57,21.87-23.11,32.74-44.44,33.69-30.81,1.36-54.72-19.6-54.53-51.01.08-14.61,3.16-29.38,14.85-39.7,18.41-16.26,48-18.2,67.94-3.22,15.23,11.44,19.57,31,17.83,49.39l-71.35.09c.89,10.11,7,18.31,15.57,20.99,9.9,3.1,19.97.86,25.8-10.33ZM1051.95,178.25c-1.99-14.06-11.48-19.6-22.04-19.31-9.99.27-18.48,7.42-19.37,19.46l41.41-.15Z"/>
+          <path d="M751.91,179.23l-.22,59.99-29.42-.09-.03-98.67,27.79-.47.96,12.3c8.41-11.54,20.02-15.18,34.48-14.06,15.75,1.22,30.3,12.66,30.51,30.1l.88,70.76-29.24.31-.86-64.83c-.13-9.57-11.87-13.08-18.93-12.34-7.13.75-15.87,7.26-15.91,17Z"/>
+          <path d="M1362.21,211.59c-2.51,30.33-41.94,35.02-70.21,26.57-14.3-4.27-23.21-15.11-23.47-31.39l28.15.12c2.41,14.58,14.55,16.7,30.37,13.55,2.91-.58,7.1-6.94,6.63-9.81-.48-2.86-5.3-6.93-8.45-7.62l-32.6-7.18c-12.94-2.85-20.57-13.6-21.22-24.74-.77-13.12,5.83-24.44,19.05-29.17,15.63-5.59,33.65-5.65,49.18.25,12.09,4.59,19.27,14.28,19.49,28.43l-25.89.27c-3.33-12.23-12.25-14.41-23.64-13.18-3.51.38-9.09,4.17-9.85,7.48-.94,4.1,4.23,9.3,8.8,10.3l35.76,7.78c13.3,2.9,18.94,15.62,17.89,28.34Z"/>
+          <path d="M1604.6,215.26l.69,23.61c-24.69,4.13-49.48-1.15-49.57-22.96l-.22-54.13-15.84-.42-.07-20.9,15.79-.58.31-29.62,28.46.11.35,29.84,20.24-.08.09,21.15-20.73.45.88,48.05c.1,5.57,10.35,8.39,19.64,5.49Z"/>
+          <path d="M1429.53,216.15l.79,22.77c-24.59,4.27-49.24-1.5-49.4-23.24l-.4-54.02-15.74-.13-.11-21.08,15.75-.61.28-29.58h29s.05,29.64.05,29.64l19.76.38-.14,21.31-19.76.08.51,49.86c3.1,3.85,9.76,5.21,19.41,4.62Z"/>
+          <path d="M1676.67,215.92l-.1,23.3-27.11-.2c-13.02-.09-22.22-12.46-22.25-25.39l-.12-51.87-15.33-.29.02-21.03,15.19-.38.31-29.67,28.77-.17.31,29.72,20.03.42.04,21.26-20.36-.33.52,49.77c2.62,4.41,11.19,5.83,20.09,4.84Z"/>
+          <polygon points="597.13 238.82 567.08 239.11 567.11 102.18 597.03 102.16 597.13 238.82"/>
+          <path d="M1124.14,239.14l-29.54.04v-98.83s28.08-.26,28.08-.26l.6,14.02c8.12-11.92,19.66-18.25,34.88-15.33l-.41,27.13c-11.21-.78-18.1-.43-25.52,4.41-4.88,3.18-8.19,12.96-8.18,20.15l.09,48.67Z"/>
+        </g>
+      </svg>
+      <span class="top__meta"><span class="top__dot" aria-hidden="true"></span>Arbeitsstand · 01.07.2026</span>
     </header>
 
     <main>
-      <!--
-        Eine Ansicht. Standbild und Clip müssen dasselbe Seitenverhältnis
-        haben (--shot-aspect), und das Standbild MUSS das erste Frame des
-        Clips sein - sonst springt das Bild beim Überblenden.
-        Details: docs/medien.md
-      -->
-      <figure class="view" data-clip="idle">
-        <img
-          class="view__still"
-          src="%VITE_MEDIA_BASE%/eingang.jpg"
-          width="1664"
-          height="1244"
-          alt="Eingang der Hector-Stiftung bei Dämmerung: vertikale Holzlamellen, rundes Fenster und verglaster Windfang."
-          fetchpriority="high"
-        />
-        <!--
-          Kein loop: der Clip ist eine Kamerafahrt, kein Ambient-Loop. Er
-          läuft einmal und bleibt auf dem letzten Frame stehen; beim
-          Verlassen blendet er zurück aufs Standbild.
-        -->
-        <video class="view__clip" muted playsinline preload="none" aria-hidden="true" tabindex="-1">
-          <source data-src="%VITE_MEDIA_BASE%/eingang.webm" type="video/webm" />
-          <source data-src="%VITE_MEDIA_BASE%/eingang.mp4" type="video/mp4" />
-        </video>
-      </figure>
+      <section class="hero">
+        <img class="hero__img" src="%VITE_MEDIA_BASE%/hero.webp" width="2400" height="1792"
+             fetchpriority="high" decoding="async"
+             alt="Das Ärztehaus der Hector Stiftung nach der Modernisierung bei Sonnenuntergang: Photovoltaik auf dem Dach, Rundbank um den Bestandsbaum, überdachte Fahrradstellplätze und Blühflächen am Vorplatz." />
+        <div class="hero__veil" aria-hidden="true"></div>
+        <div class="hero__text">
+          <p class="hero__where">Hector Stiftung · Am Schloßberg 2, 69469 Weinheim</p>
+          <h1 class="hero__title">Effiziente Modernisierung<br /><em>des Ärztehauses</em></h1>
+        </div>
+        <span class="hero__scroll" aria-hidden="true">Scrollen</span>
+      </section>
 
-      <p class="hint" data-hint>Ansicht überfahren</p>
+      <p class="wip" data-reveal>
+        <svg class="wip__icon" aria-hidden="true"><use href="#ic-shield" /></svg>
+        <span>
+          <strong>Arbeitsstand.</strong> Die hier beschriebenen Änderungen — Baumreihe,
+          verengte Fahrbahn, neuer Müllplatz — sind in den Darstellungen
+          <strong>noch nicht visualisiert</strong>. Die Renderings zeigen einen früheren
+          Planungsstand.
+        </span>
+      </p>
 
-      <section class="caption">
-        <h1 class="caption__title">Erweiterung der Hector-Stiftung</h1>
-        <p class="caption__where">Am Schlossberg 2, Weinheim &middot; Fassadenneugestaltung</p>
+      <section class="lede">
+        <p class="lede__text" data-reveal>
+          Aufstockung, Fassadenertüchtigung und ein Vorbereich, der mehr kann als parken.
+          Der Bestand bleibt ablesbar — verändert wird, was Energie kostet, was den
+          Fußverkehr behindert und was den Bäumen den Wurzelraum nimmt.
+        </p>
+        <div class="figures">
+          <div class="figure" data-reveal>
+            <svg class="figure__icon" aria-hidden="true"><use href="#ic-car" /></svg>
+            <p class="figure__value">14</p>
+            <p class="figure__unit">Stellplätze</p>
+            <p class="figure__note">Mitarbeiter und Bewohner Stadthaus 1</p>
+          </div>
+          <div class="figure" data-reveal>
+            <svg class="figure__icon" aria-hidden="true"><use href="#ic-level" /></svg>
+            <p class="figure__value">+117,40</p>
+            <p class="figure__unit">Meter ü. NN</p>
+            <p class="figure__note">Oberkante Fertigfußboden Parkebene</p>
+          </div>
+          <div class="figure" data-reveal>
+            <svg class="figure__icon" aria-hidden="true"><use href="#ic-ruler" /></svg>
+            <p class="figure__value">1:50</p>
+            <p class="figure__unit">Maßstab</p>
+            <p class="figure__note">Grundriss Ebene 05, Blatt 01</p>
+          </div>
+          <div class="figure" data-reveal>
+            <svg class="figure__icon" aria-hidden="true"><use href="#ic-town" /></svg>
+            <p class="figure__value">28604</p>
+            <p class="figure__unit">Flurstück</p>
+            <p class="figure__note">Gemarkung Weinheim</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene">
+        <figure class="stage" data-clip="idle">
+          <img class="stage__still" src="%VITE_MEDIA_BASE%/strasse.webp"
+               width="1664" height="1244" loading="lazy" decoding="async" alt="Straßenansicht Am Schloßberg bei Tag: Natursteinsockel, Putzbau mit vertikaler Holzlamellenschicht, Tiefgaragenzufahrt und die Baumreihe entlang des Gebäudes." />
+          <video class="stage__clip" muted playsinline preload="none" aria-hidden="true" tabindex="-1">
+            <source data-src="%VITE_MEDIA_BASE%/strasse.webm" type="video/webm" />
+            <source data-src="%VITE_MEDIA_BASE%/strasse.mp4" type="video/mp4" />
+          </video>
+          <figcaption class="stage__tag"><span class="stage__no">01</span>Am Schloßberg</figcaption>
+          <span class="stage__wip">Stand der Darstellung — Änderungen noch nicht visualisiert</span>
+          <span class="stage__cue" data-cue aria-hidden="true">Überfahren</span>
+        </figure>
+
+        <div class="scene__body">
+          <div class="scene__intro">
+            <h2 class="scene__title" data-reveal>Schmalere Fahrbahn,<br /><em>mehr Wurzelraum</em></h2>
+            <p class="scene__lead" data-reveal>Der Entwurf der Stadt Weinheim für die Baumreihe entlang des Gebäudes ist in die Planung eingearbeitet. Die Fahrbahn wird nicht verengt, um Platz zu sparen — sondern damit die Bäume Wurzelraum bekommen. Fußverkehr und Tiefgaragenzufahrt gewinnen mit.</p>
+          </div>
+          <ul class="bento">
+            <li class="tile" style="--span:6" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-tree" /></svg>
+              <h3 class="tile__title">Baumreihe nach Entwurf der Stadt</h3>
+              <p class="tile__text">Der städtische Entwurf für die Baumreihe entlang des Gebäudes ist übernommen und in die Planung eingearbeitet.</p>
+            </li>
+            <li class="tile" style="--span:6" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-greenroof" /></svg>
+              <h3 class="tile__title">Grünstreifen erweitert</h3>
+              <p class="tile__text">Mehr durchwurzelbarer Raum. Der Streifen wächst zulasten der Fahrbahn, nicht zulasten des Gehwegs.</p>
+            </li>
+            <li class="tile" style="--span:4" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-narrow" /></svg>
+              <h3 class="tile__title">Fahrbahn verengt</h3>
+              <p class="tile__text">Der schmalere Querschnitt bremst — genau dort, wo Ein- und Ausfahrt auf den Gehweg treffen.</p>
+            </li>
+            <li class="tile" style="--span:4" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-barrier" /></svg>
+              <h3 class="tile__title">Zufahrt entschärft</h3>
+              <p class="tile__text">Ein- und Ausfahrtsschranke mit Kontrollsäule und Induktionsschleife.</p>
+            </li>
+            <li class="tile" style="--span:4" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-walk" /></svg>
+              <h3 class="tile__title">Gehweg gewinnt</h3>
+              <p class="tile__text">Bestandspflaster nach RStO, Bauklasse 1, Pflasterstärke 10 bis 12 cm.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="scene">
+        <figure class="stage" data-clip="idle">
+          <img class="stage__still" src="%VITE_MEDIA_BASE%/eingang.webp"
+               width="1664" height="1244" loading="lazy" decoding="async" alt="Eingang des Ärztehauses bei Dämmerung: vertikale Holzlamellen, rundes Fenster, verglaster Windfang und beleuchtete Praxisgeschosse." />
+          <video class="stage__clip" muted playsinline preload="none" aria-hidden="true" tabindex="-1">
+            <source data-src="%VITE_MEDIA_BASE%/eingang.webm" type="video/webm" />
+            <source data-src="%VITE_MEDIA_BASE%/eingang.mp4" type="video/mp4" />
+          </video>
+          <figcaption class="stage__tag"><span class="stage__no">02</span>Fassade & Energie</figcaption>
+          <span class="stage__wip">Stand der Darstellung — Änderungen noch nicht visualisiert</span>
+          <span class="stage__cue" data-cue aria-hidden="true">Überfahren</span>
+        </figure>
+
+        <div class="scene__body">
+          <div class="scene__intro">
+            <h2 class="scene__title" data-reveal>Der Bestand bleibt.<br /><em>Nur besser.</em></h2>
+            <p class="scene__lead" data-reveal>Die Fassade wird nicht ersetzt, sondern ertüchtigt. Kubatur, Gliederung und Material bleiben, was sie sind — modernisiert wird, was Energie kostet, nicht der Ausdruck.</p>
+          </div>
+          <ul class="bento">
+            <li class="tile" style="--span:7" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-facade" /></svg>
+              <h3 class="tile__title">Fassade bleibt erhalten</h3>
+              <p class="tile__text">Keine Neuerfindung: Sockel, Putzbau und die hölzerne Schicht am Eingang bleiben. Ertüchtigt wird die Hülle, nicht die Erscheinung.</p>
+            </li>
+            <li class="tile" style="--span:5" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-sun" /></svg>
+              <h3 class="tile__title">Photovoltaik auf dem Dach</h3>
+              <p class="tile__text">Die Dachfläche der Aufstockung trägt eine durchgehende Anlage.</p>
+            </li>
+            <li class="tile" style="--span:5" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-energy" /></svg>
+              <h3 class="tile__title">Eigenverbrauch vor Zukauf</h3>
+              <p class="tile__text">Was auf dem Dach entsteht, wird im Haus verbraucht — in genau den Stunden, in denen die Praxen arbeiten.</p>
+            </li>
+            <li class="tile" style="--span:3" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-shield" /></svg>
+              <h3 class="tile__title">Fassade nicht brennbar</h3>
+              <p class="tile__text">Brandschutzanforderung aus dem Plan.</p>
+            </li>
+            <li class="tile" style="--span:4" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-ruler" /></svg>
+              <h3 class="tile__title">Öffnungen BRH 1,50 m</h3>
+              <p class="tile__text">Durchgehend ab Oberkante Rohfußboden.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="scene">
+        <figure class="stage" data-clip="idle">
+          <img class="stage__still" src="%VITE_MEDIA_BASE%/vorplatz.webp"
+               width="1664" height="1244" loading="lazy" decoding="async" alt="Vorplatz bei Sonnenuntergang: Rundbank um den Bestandsbaum, überdachte Fahrradstellplätze, Blühflächen und Photovoltaik auf dem Dach." />
+          <video class="stage__clip" muted playsinline preload="none" aria-hidden="true" tabindex="-1">
+            <source data-src="%VITE_MEDIA_BASE%/vorplatz.webm" type="video/webm" />
+            <source data-src="%VITE_MEDIA_BASE%/vorplatz.mp4" type="video/mp4" />
+          </video>
+          <figcaption class="stage__tag"><span class="stage__no">03</span>Freianlagen</figcaption>
+          <span class="stage__wip">Stand der Darstellung — Änderungen noch nicht visualisiert</span>
+          <span class="stage__cue" data-cue aria-hidden="true">Überfahren</span>
+        </figure>
+
+        <div class="scene__body">
+          <div class="scene__intro">
+            <h2 class="scene__title" data-reveal>Eine Fläche,<br /><em>mehrere Aufgaben</em></h2>
+            <p class="scene__lead" data-reveal>Die befestigten Flächen leisten heute je eine Aufgabe. Die Freianlagenstudie fragt, was sie leisten könnten, wenn sie mehrere zugleich übernehmen.</p>
+          </div>
+          <ul class="bento">
+            <li class="tile" style="--span:7" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-car" /></svg>
+              <h3 class="tile__title">Multicodierte Fläche</h3>
+              <p class="tile__text">Stellplätze, Aufenthalt und Raum für Feste und Firmenveranstaltungen auf derselben Fläche.</p>
+            </li>
+            <li class="tile" style="--span:5" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-water" /></svg>
+              <h3 class="tile__title">Schwammstadtprinzip</h3>
+              <p class="tile__text">Versickerungsfähige Beläge statt Kanalanschluss. Regen bleibt, wo er fällt.</p>
+            </li>
+            <li class="tile" style="--span:5" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-waste" /></svg>
+              <h3 class="tile__title">Neuer Müllplatz</h3>
+              <p class="tile__text">Mit versickerungsfähigem Stellplatz, der zugleich als Aufstellfläche für die Abholung dient.</p>
+            </li>
+            <li class="tile" style="--span:4" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-bike" /></svg>
+              <h3 class="tile__title">Überdachte Fahrradplätze</h3>
+              <p class="tile__text">Mit Dachbegrünung — Witterungsschutz und Retention in einem Bauteil.</p>
+            </li>
+            <li class="tile" style="--span:3" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-tree" /></svg>
+              <h3 class="tile__title">Baumscheiben vergrößert</h3>
+              <p class="tile__text">Mehr Wurzelraum verbessert Vitalität und Entwässerung zugleich.</p>
+            </li>
+            <li class="tile" style="--span:4" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-greenroof" /></svg>
+              <h3 class="tile__title">Erhöhte Pflanzinseln</h3>
+              <p class="tile__text">Trockenheitsverträgliche Staudenmischungen, nutzbar als Sitzgelegenheit.</p>
+            </li>
+            <li class="tile" style="--span:5" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-access" /></svg>
+              <h3 class="tile__title">Barrierefrei und seniorengerecht</h3>
+              <p class="tile__text">Bänke entlang der Wege, Behindertenparkplatz, klimaangepasste Baumarten.</p>
+            </li>
+            <li class="tile" style="--span:3" data-reveal>
+              <svg class="tile__icon" aria-hidden="true"><use href="#ic-charge" /></svg>
+              <h3 class="tile__title">Ladesäule</h3>
+              <p class="tile__text">Vorbereitet im Zufahrtsbereich.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="micro">
+        <div class="micro__head">
+          <p class="kicker" data-reveal>Mikrolage</p>
+          <h2 class="scene__title" data-reveal>Innenstadt,<br /><em>ohne Umweg</em></h2>
+          <p class="scene__lead" data-reveal>
+            Das Grundstück liegt in der Kernstadt. Die nächste Bushaltestelle ist näher, als
+            die meisten Besucher ihr Auto abstellen würden. Luftlinie ab
+            49,5489°&nbsp;N / 8,6744°&nbsp;O.
+          </p>
+        </div>
+        <ul class="nears">
+          <li class="near" data-reveal>
+            <svg class="near__icon" aria-hidden="true"><use href="#ic-bus" /></svg>
+            <span class="near__dist">99 m</span>
+            <span class="near__name">Bushaltestelle Schlossbergterrasse</span>
+          </li>
+          <li class="near" data-reveal>
+            <svg class="near__icon" aria-hidden="true"><use href="#ic-town" /></svg>
+            <span class="near__dist">180 m</span>
+            <span class="near__name">Bürgerbüro Weinheim</span>
+          </li>
+          <li class="near" data-reveal>
+            <svg class="near__icon" aria-hidden="true"><use href="#ic-health" /></svg>
+            <span class="near__dist">190 m</span>
+            <span class="near__name">Apotheke am Karlsberg</span>
+          </li>
+          <li class="near" data-reveal>
+            <svg class="near__icon" aria-hidden="true"><use href="#ic-bus" /></svg>
+            <span class="near__dist">198 m</span>
+            <span class="near__name">Bushaltestelle Dürreplatz</span>
+          </li>
+          <li class="near" data-reveal>
+            <svg class="near__icon" aria-hidden="true"><use href="#ic-walk" /></svg>
+            <span class="near__dist">257 m</span>
+            <span class="near__name">Kindergarten Kids at Sue</span>
+          </li>
+          <li class="near" data-reveal>
+            <svg class="near__icon" aria-hidden="true"><use href="#ic-town" /></svg>
+            <span class="near__dist">451 m</span>
+            <span class="near__name">Rathaus Weinheim</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="parties">
+        <div class="party" data-reveal>
+          <p class="party__role">Eigentümerin und Bauherrschaft</p>
+          <p class="party__name">Hector Stiftung</p>
+          <p class="party__note">Hector Geschäftsführungs GmbH, Am Schloßberg 2, Weinheim</p>
+        </div>
+        <div class="party" data-reveal>
+          <p class="party__role">Kommune und Genehmigung</p>
+          <p class="party__name">Stadt Weinheim</p>
+          <p class="party__note">
+            Entwurf der Baumreihe entlang des Gebäudes, Straßenraum, Stellplatznachweis
+            und Feuerwehraufstellfläche
+          </p>
+        </div>
+        <div class="party" data-reveal>
+          <p class="party__role">Architektur und Planung</p>
+          <p class="party__name">Planwerkstatt 96</p>
+          <p class="party__note">
+            Gerd Niedermayer und Matthias Heintz · Am Schloßberg 2, Weinheim — Büro im Haus.
+            <a href="tel:+496201259696">+49 6201 259696</a> ·
+            <a href="https://www.pw96.de" rel="noreferrer">pw96.de</a>
+          </p>
+        </div>
+        <div class="party" data-reveal>
+          <p class="party__role">Freianlagen</p>
+          <p class="party__name">KEPOS Gartenarchitektur</p>
+          <p class="party__note">Dipl.-Ing. Carola Dittrich, Weinheim — Konzeptstudie K01</p>
+        </div>
+      </section>
+
+      <section class="tech">
+        <p class="kicker" data-reveal>Aus dem Grundriss Ebene 05</p>
+        <ul class="tech__list">
+          <li data-reveal><svg aria-hidden="true"><use href="#ic-fire" /></svg>Feuerwehraufstellfläche, Rettungsweg, Anleiterung und Andienung in einer Fläche</li>
+          <li data-reveal><svg aria-hidden="true"><use href="#ic-pipe" /></svg>Erdleitungen zu Stadthaus 2: Heizung Vor- und Rücklauf, Kaltwasser, Elektro, Kabel, Telefon</li>
+          <li data-reveal><svg aria-hidden="true"><use href="#ic-pipe" /></svg>Acht Elektro-Leerrohre DN 150, Grundleitungen Stadthaus 1 und 2</li>
+          <li data-reveal><svg aria-hidden="true"><use href="#ic-car" /></svg>Stellplatzbreite 2,45 m, zusätzliche Stellplätze an der Anbindung Stadthaus</li>
+          <li data-reveal><svg aria-hidden="true"><use href="#ic-waste" /></svg>Müllraum im Gebäude, Pelletlieferfläche an der Andienung</li>
+        </ul>
       </section>
     </main>
 
     <footer class="foot">
       <p class="foot__note">
-        Vorabzug, nicht freigegeben. Freianlagen: Ideensammlung, kein
-        Vorentwurf.
+        <strong>Work in Progress.</strong> Alle Angaben sind Arbeitsstand und nicht
+        freigegeben; die beschriebenen Änderungen sind in den Darstellungen noch nicht
+        visualisiert. Planstand 01.07.2026, Planinhalt
+        „Erweiterung der Hector-Stiftung und Fassadenneugestaltung“. Die Freianlagen sind eine
+        Ideensammlung und kein Vorentwurf — nicht abgestimmt und nicht genehmigungsrelevant.
+        Maße sind Rohbaumaße und vom Auftragnehmer am Bau zu prüfen.
       </p>
-      <p class="foot__credit">
-        Bauherrschaft Hector Geschäftsführungs GmbH &middot; Freianlagen KEPOS
-        Gartenarchitektur
+      <p class="foot__by">
+        <span>Planwerkstatt 96 — Planung · Am Schloßberg 2, 69469 Weinheim</span>
+        <span class="foot__tiny">beuwy — Renderings, Visuals, Design</span>
       </p>
     </footer>
 

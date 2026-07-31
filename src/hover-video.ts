@@ -12,8 +12,13 @@
  * job is to look instant in a pitch meeting.
  */
 
-/** How long the still→clip crossfade runs. Keep in sync with --clip-fade in styles.css. */
-const FADE_MS = 420;
+/**
+ * How long the clip takes to fade back out. Must match --clip-fade-out in
+ * styles.css: the fade in (400ms) is deliberately slower than the fade out
+ * (350ms) — opening is an invitation, closing should get out of the way — and
+ * it is the *out* duration that decides when it is safe to pause.
+ */
+const FADE_MS = 350;
 
 /** Pointer must rest on the card this long before we spend bandwidth. */
 const INTENT_DELAY_MS = 90;

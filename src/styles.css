@@ -1,30 +1,42 @@
-/* ---------------------------------------------------------------------------
+/* ===========================================================================
    Tokens
-   --------------------------------------------------------------------------- */
+   =========================================================================== */
 
 :root {
-  --paper: #f5f3ef;
-  --ink: #16181c;
-  --ink-soft: #6e6a63;
+  /* Warmes Papier statt Weiß, Off-Black statt Schwarz. */
+  --paper: #f6f4f0;
+  --paper-deep: #edeae3;
+  --ink: #14161a;
+  --ink-soft: #6b6862;
+  --line: #e0dbd2;
+  /* Ein Akzent, entsättigt — er nimmt das Holz der Lamellen und das
+     Fensterlicht der Renderings auf, statt daneben zu leuchten. */
+  --accent: #8f5f22;
 
-  --gutter: clamp(1.25rem, 5vw, 4rem);
+  --gutter: clamp(1.25rem, 5vw, 5rem);
+  --page: 82rem;
 
-  /* Seitenverhältnis der Ansicht — Standbild und Clip teilen es sich.
-     1664 x 1244 ist das Format, in dem der Clip vorliegt. */
-  --shot-aspect: 1664 / 1244;
+  /* --- Motion-Tokens (transitions.dev) ---------------------------------- */
+  --duration-stagger: 40ms;
+  --duration-quick: 150ms;
+  --duration-fast: 250ms;
+  --duration-medium: 350ms;
+  --duration-slow: 400ms;
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-bounce-strong: cubic-bezier(0.34, 3.85, 0.64, 1);
+  --distance-base: 8px;
+  --distance-medium: 12px;
 
-  /* Platzbedarf alles ausser der Ansicht. Empirisch gemessen, siehe .view. */
-  --chrome: 23rem;
-
-  /* --clip-fade muss FADE_MS in hover-video.ts entsprechen. */
-  --clip-fade: 420ms;
-  --settle: 620ms;
-  --ease: cubic-bezier(0.2, 0, 0, 1);
+  /* Öffnen ist eine Einladung, Schließen soll aus dem Weg gehen: die
+     Einblendung des Clips läuft 400ms, die Ausblendung 350ms.
+     --clip-fade-out MUSS FADE_MS in hover-video.ts entsprechen. */
+  --clip-fade-in: var(--duration-slow);
+  --clip-fade-out: var(--duration-medium);
 }
 
-/* ---------------------------------------------------------------------------
+/* ===========================================================================
    Basis
-   --------------------------------------------------------------------------- */
+   =========================================================================== */
 
 *,
 *::before,
@@ -34,29 +46,26 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
   margin: 0;
-  min-height: 100svh;
-  display: grid;
-  /* Kopf oben, Fuß unten, die Ansicht bekommt den Rest — auf hohen Displays
-     steht sie dadurch mittig statt oben zu kleben. */
-  grid-template-rows: auto 1fr auto;
-  /* Bewusst feste Abstände statt vh: der Platz, den Kopf, Bildunterschrift und
-     Fuß brauchen, geht unten als --chrome in die Höhenbegrenzung der Ansicht
-     ein. Mit vh-Abständen wüchse dieser Bedarf mit der Fensterhöhe mit, und
-     die Rechnung ginge auf keinem Display auf. */
-  gap: 2.5rem;
-  padding: 1.5rem var(--gutter) 1.75rem;
-
   background: var(--paper);
   color: var(--ink);
-  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  font-size: clamp(0.9rem, 0.85rem + 0.2vw, 1rem);
+  font-family: 'Outfit', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.0625rem);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Zahlen in Tabellen und Kennwerten sollen untereinander stehen. */
+  font-variant-numeric: tabular-nums;
 }
 
 img,
@@ -66,147 +75,681 @@ svg {
   max-width: 100%;
 }
 
-/* ---------------------------------------------------------------------------
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.kicker {
+  margin: 0 0 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ===========================================================================
+   Reveal beim Scrollen
+   Nur transform und opacity — beides läuft auf dem Compositor, ohne Layout.
+   =========================================================================== */
+
+/* Nur wenn das Inline-Skript im Kopf lief — sonst bleibt alles sichtbar,
+   statt dass ein fehlgeschlagenes Modul die Seite leer zurücklässt. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, var(--distance-medium), 0);
+  transition:
+    opacity var(--duration-slow) var(--ease-smooth-out),
+    transform var(--duration-slow) var(--ease-smooth-out);
+  /* Staffelung: 40ms pro Element, aber gedeckelt, damit das letzte Element
+     einer langen Liste nicht zu spät kommt. */
+  transition-delay: calc(var(--i, 0) * var(--duration-stagger));
+}
+
+.js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ===========================================================================
    Kopf
-   --------------------------------------------------------------------------- */
+   =========================================================================== */
 
 .top {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
+  padding: 1.25rem var(--gutter);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--duration-fast) var(--ease-smooth-out);
+}
+
+.top[data-stuck] {
+  border-bottom-color: var(--line);
 }
 
 .logo {
-  /* Die Wortmarke ist 6,9:1 — über die Breite steuern, nicht über die Höhe. */
-  width: clamp(9rem, 18vw, 13rem);
+  width: clamp(8.5rem, 16vw, 11.5rem);
   height: auto;
   color: var(--ink);
 }
 
 .top__meta {
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-soft);
   white-space: nowrap;
 }
 
-/* ---------------------------------------------------------------------------
-   Ansicht
-   --------------------------------------------------------------------------- */
-
-main {
-  display: grid;
-  align-content: center;
-  justify-items: center;
-  gap: 1.25rem;
+.top__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
-.view {
+/* ===========================================================================
+   Hero — nahezu bildschirmfüllend
+   =========================================================================== */
+
+.hero {
+  position: relative;
+  /* svh statt vh: auf iOS springt vh, wenn die Adressleiste einfährt. */
+  height: min(94svh, 62rem);
+  min-height: 32rem;
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.hero__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Etwas über die Mitte: das Gebäude sitzt im oberen Drittel, der Vorplatz
+     darf unten beschnitten werden. */
+  object-position: 50% 42%;
+}
+
+/* Kein pauschales Abdunkeln des Bildes — nur unten so viel Verlauf, dass die
+   Schrift trägt. */
+.hero__veil {
+  position: absolute;
+  inset: auto 0 0;
+  height: 62%;
+  background: linear-gradient(to top, rgba(12, 13, 16, 0.82), rgba(12, 13, 16, 0));
+}
+
+.hero__text {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: clamp(2.5rem, 7vh, 5rem);
+  max-width: 46rem;
+  color: #fdfcfa;
+}
+
+.hero__where {
+  margin: 0 0 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(253, 252, 250, 0.72);
+}
+
+.hero__title {
+  font-size: clamp(2.25rem, 7vw, 5.25rem);
+  line-height: 0.98;
+}
+
+.hero__title em {
+  color: #e8b877;
+}
+
+.hero__scroll {
+  position: absolute;
+  right: var(--gutter);
+  bottom: clamp(2.5rem, 7vh, 5rem);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(253, 252, 250, 0.66);
+  writing-mode: vertical-rl;
+}
+
+@media (max-width: 48rem) {
+  .hero__scroll {
+    display: none;
+  }
+}
+
+/* ===========================================================================
+   Arbeitsstand-Band
+   =========================================================================== */
+
+.wip {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: start;
+  max-width: var(--page);
+  margin: clamp(2.5rem, 6vw, 4rem) auto 0;
+  padding: 1.1rem var(--gutter);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.wip strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.wip__icon {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  color: var(--accent);
+}
+
+@media (min-width: 48rem) {
+  .wip {
+    padding-inline: calc(var(--gutter) + 0px);
+  }
+}
+
+/* ===========================================================================
+   Einleitung + Kennzahlen
+   =========================================================================== */
+
+.lede {
+  max-width: var(--page);
+  margin: clamp(1.5rem, 4vw, 2.5rem) auto clamp(4rem, 10vw, 7rem);
+  padding: 0 var(--gutter);
+}
+
+.lede__text {
+  max-width: 52ch;
+  margin: 0 0 clamp(2.5rem, 6vw, 4rem);
+  font-size: clamp(1.05rem, 1.6vw, 1.375rem);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.figures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0 2rem;
+}
+
+.figure {
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.figure__icon {
+  width: 20px;
+  height: 20px;
+  margin-bottom: 1rem;
+  color: var(--accent);
+}
+
+.figure__value {
+  margin: 0;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.figure__unit {
+  margin: 0.35rem 0 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.figure__note {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* ===========================================================================
+   Szene: bildschirmfüllende Bühne, darunter das Bento
+   =========================================================================== */
+
+.scene {
+  margin: 0 0 clamp(4rem, 10vw, 7rem);
+}
+
+.stage {
   position: relative;
   margin: 0;
+  /* Randlos über die volle Breite — das Rendering ist der Grund für die Seite. */
   width: 100%;
-  /* Nie höher als der freie Platz, sonst schiebt die Ansicht den Fuß aus dem
-     Bild — und ausgerechnet der Vorbehalt der Planer würde ungesehen
-     weggescrollt. --chrome ist der gemessene Platzbedarf von Kopf, Hinweis,
-     Bildunterschrift, Fuß und allen Abständen. */
-  max-width: min(100%, calc((100svh - var(--chrome)) * 1664 / 1244));
-  aspect-ratio: var(--shot-aspect);
+  height: min(88svh, 58rem);
+  min-height: 24rem;
   overflow: hidden;
-  background: #e8e4dc;
-  transition: transform var(--settle) var(--ease);
+  background: var(--ink);
+  cursor: pointer;
 }
 
-.view__still,
-.view__clip {
+.stage__still,
+.stage__clip {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: 50% 45%;
 }
 
-.view__clip {
+.stage__clip {
   opacity: 0;
-  /* Einmal vorab promoten — die Überblendung läuft dann auf der GPU und der
-     erste Hover verliert keine Frames. */
   will-change: opacity;
-  transition: opacity var(--clip-fade) var(--ease);
+  transition: opacity var(--clip-fade-out) var(--ease-smooth-out);
 }
 
-.view[data-clip='playing'] .view__clip {
+.stage[data-clip='playing'] .stage__clip {
   opacity: 1;
+  transition-duration: var(--clip-fade-in);
 }
 
-.hint {
-  margin: 0;
+.stage__tag {
+  position: absolute;
+  left: var(--gutter);
+  top: clamp(1.25rem, 3vw, 2rem);
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
   font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(253, 252, 250, 0.86);
+  text-shadow: 0 1px 12px rgba(12, 13, 16, 0.55);
+}
+
+.stage__no {
+  font-size: 0.8125rem;
+  color: #e8b877;
+}
+
+.stage__wip {
+  position: absolute;
+  left: var(--gutter);
+  bottom: clamp(1.25rem, 3vw, 2rem);
+  max-width: min(28rem, calc(100% - 2 * var(--gutter)));
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(253, 252, 250, 0.62);
+  text-shadow: 0 1px 12px rgba(12, 13, 16, 0.6);
+}
+
+.stage__cue {
+  position: absolute;
+  right: var(--gutter);
+  bottom: clamp(1.25rem, 3vw, 2rem);
+  padding: 0.45rem 0.8rem;
+  font-size: 0.625rem;
+  font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--ink-soft);
-  transition: opacity var(--settle) var(--ease);
+  color: #fdfcfa;
+  background: rgba(12, 13, 16, 0.55);
+  backdrop-filter: blur(8px);
+  transition:
+    opacity var(--duration-fast) var(--ease-smooth-out),
+    transform var(--duration-fast) var(--ease-smooth-out);
 }
 
-/* Wer die Bewegung einmal gesehen hat, braucht den Hinweis nicht mehr. */
-.hint[data-spent] {
+.stage[data-clip='playing'] .stage__cue,
+.stage__cue[data-spent] {
   opacity: 0;
+  transform: translate3d(0, var(--distance-base), 0);
 }
 
-/* Ohne Hover und ohne Bewegung ist der Hinweis eine Lüge. */
 @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
-  .hint {
+  .stage__cue {
     display: none;
+  }
+
+  .stage {
+    cursor: default;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .view,
-  .view__clip {
+  .stage__clip {
     transition: none;
   }
 }
 
-.caption {
-  text-align: center;
-  max-width: 44rem;
+/* --- Text und Bento unter der Bühne ------------------------------------- */
+
+.scene__body {
+  max-width: var(--page);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4rem) var(--gutter) 0;
 }
 
-.caption__title {
-  margin: 0;
-  font-size: clamp(1.125rem, 2.2vw, 1.5rem);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.25;
+.scene__intro {
+  max-width: 54rem;
+  margin-bottom: clamp(2rem, 5vw, 3rem);
 }
 
-.caption__where {
-  margin: 0.35rem 0 0;
+.scene__title {
+  font-size: clamp(1.875rem, 4.5vw, 3.25rem);
+}
+
+.scene__lead {
+  max-width: 56ch;
+  margin: 1.25rem 0 0;
+  font-size: clamp(1rem, 1.3vw, 1.125rem);
   color: var(--ink-soft);
   text-wrap: pretty;
 }
 
-/* ---------------------------------------------------------------------------
+/* Bento: 12 Spalten, ungleiche Kachelbreiten. Kein Radius, keine Schatten —
+   die Kacheln liegen auf dem Papier statt darüber zu schweben. */
+.bento {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border-block: 1px solid var(--line);
+}
+
+.tile {
+  grid-column: span 12;
+  padding: 1.5rem 1.5rem 1.75rem;
+  background: var(--paper);
+  transition: background-color var(--duration-fast) var(--ease-smooth-out);
+}
+
+@media (min-width: 40rem) {
+  .tile {
+    grid-column: span 6;
+  }
+}
+
+@media (min-width: 62rem) {
+  .tile {
+    grid-column: span var(--span, 4);
+  }
+}
+
+.tile:hover {
+  background: color-mix(in srgb, var(--accent) 6%, var(--paper));
+}
+
+.tile__icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 1.1rem;
+  color: var(--accent);
+  transition: transform var(--duration-fast) var(--ease-smooth-out);
+}
+
+/* Hover rein kurz und direkt, Hover raus weicher mit leichtem Nachfedern —
+   die eine Stelle, an der das Zurück aufwendiger sein darf als das Hin. */
+.tile:hover .tile__icon {
+  transform: translate3d(0, -3px, 0);
+  transition-timing-function: var(--ease-bounce-strong);
+}
+
+.tile__title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.tile__text {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* ===========================================================================
+   Mikrolage
+   =========================================================================== */
+
+.micro {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  max-width: var(--page);
+  margin: 0 auto clamp(5rem, 14vw, 9rem);
+  padding: 0 var(--gutter);
+}
+
+@media (min-width: 62rem) {
+  .micro {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    align-items: start;
+  }
+}
+
+.nears {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+}
+
+.near {
+  display: grid;
+  grid-template-columns: auto 5rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.near__icon {
+  width: 18px;
+  height: 18px;
+  align-self: center;
+  color: var(--accent);
+}
+
+.near__dist {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.near__name {
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* ===========================================================================
+   Beteiligte
+   =========================================================================== */
+
+.parties {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1px 2.5rem;
+  max-width: var(--page);
+  margin: 0 auto clamp(4rem, 12vw, 7rem);
+  padding: 0 var(--gutter);
+}
+
+.party {
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.party__role {
+  margin: 0 0 0.6rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.party__name {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.party__note a {
+  color: var(--ink);
+  text-decoration-color: var(--line);
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color var(--duration-fast) var(--ease-smooth-out);
+}
+
+.party__note a:hover {
+  text-decoration-color: var(--accent);
+}
+
+.party__note {
+  margin: 0.4rem 0 0;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* ===========================================================================
+   Technische Notizen
+   =========================================================================== */
+
+.tech {
+  max-width: var(--page);
+  margin: 0 auto clamp(4rem, 10vw, 6rem);
+  padding: 0 var(--gutter);
+}
+
+.tech__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+}
+
+.tech__list li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.tech__list svg {
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  color: var(--accent);
+}
+
+/* ===========================================================================
    Fuß
-   --------------------------------------------------------------------------- */
+   =========================================================================== */
 
 .foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.35rem 1.5rem;
+  max-width: var(--page);
+  margin: 0 auto;
+  padding: 2rem var(--gutter) 3rem;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 52rem) {
+  .foot {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 3rem;
+  }
+}
+
+.foot__note {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.foot__note strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.foot__by {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
   font-size: 0.75rem;
   color: var(--ink-soft);
 }
 
-.foot p {
-  margin: 0;
-  text-wrap: pretty;
+/* Ganz klein, wie gewünscht. */
+.foot__tiny {
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--ink-soft) 70%, transparent);
 }
 
-/* Der Vorbehalt der Planer — er soll gelesen werden können, aber die Ansicht
-   nicht überstimmen. */
-.foot__note {
-  color: var(--ink);
+@media (min-width: 52rem) {
+  .foot__by {
+    text-align: right;
+  }
 }
