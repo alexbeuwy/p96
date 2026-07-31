@@ -100,7 +100,7 @@ function initLightbox(): void {
   const cap = box?.querySelector<HTMLElement>('.lightbox__cap');
   if (!box || !img || !cap || typeof box.showModal !== 'function') return;
 
-  for (const shot of document.querySelectorAll<HTMLButtonElement>('.shot')) {
+  for (const shot of document.querySelectorAll<HTMLButtonElement>('.shot, .plan')) {
     shot.addEventListener('click', () => {
       img.src = shot.dataset.full ?? '';
       img.alt = shot.dataset.alt ?? '';

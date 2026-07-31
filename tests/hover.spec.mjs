@@ -112,6 +112,20 @@ try {
 
     // --- Galerie und Vollbild ---------------------------------------------
     check('gallery shows three shots', (await page.locator('.shot').count()) === 3);
+    check('plan carries six markers', (await page.locator('.plan .mark').count()) === 6);
+    check('legend matches the markers', (await page.locator('.keys .key').count()) === 6);
+    // Marker sitzen in Prozent — sie müssen innerhalb des Plans liegen,
+    // sonst zeigen sie auf nichts.
+    const planBox = await page.locator('.plan').boundingBox();
+    const marks = await page.locator('.plan .mark').all();
+    let inside = 0;
+    for (const m of marks) {
+      const b = await m.boundingBox();
+      if (b && planBox && b.x >= planBox.x && b.y >= planBox.y &&
+          b.x + b.width <= planBox.x + planBox.width &&
+          b.y + b.height <= planBox.y + planBox.height) inside += 1;
+    }
+    check('all markers sit inside the drawing', inside === 6, `${inside}/6`);
     check(
       'full-resolution file not fetched before the click',
       !(await page.evaluate(() =>
